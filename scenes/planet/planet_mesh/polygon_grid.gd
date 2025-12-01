@@ -12,7 +12,7 @@ func _process(_delta: float) -> void:
 	pass
 
 
-func generate_grid_from_mesh(ts:PlanetMesh,line_width:float):
+func generate_grid_from_mesh(ts:GeometryMesh,line_width:float):
 	#var grid := PlanetMesh.new()
 	var vs:PackedVector3Array = []
 	var fs:Array[PackedInt32Array]= []
