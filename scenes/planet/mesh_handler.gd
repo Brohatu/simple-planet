@@ -27,7 +27,8 @@ func build_planet_mesh():
 	# Planet geometry mesh
 	generate_planet_shape()
 	generate_planet_mesh()
-	
+	var mesh_path = 'resources/meshes/' + str(planet_data.resolution)
+	ResourceSaver.save(planet_mesh.mesh,mesh_path)
 	# Planet graphics mesh
 	
 	print("Planet build time: ", (Time.get_ticks_usec() - planet.start_time)/1_000_000.0)
