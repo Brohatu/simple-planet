@@ -2,5 +2,5 @@
 
 [ext_resource type="Script" uid="uid://rgjshpy05k28" path="res://scenes/planet/planet_mesh/geometry_mesh.gd" id="1_luell"]
 
-[node name="PlanetMesh" type="MeshInstance3D"]
+[node name="GeometryMesh" type="MeshInstance3D"]
 script = ExtResource("1_luell")
