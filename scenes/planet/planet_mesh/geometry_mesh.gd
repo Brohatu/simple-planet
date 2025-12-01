@@ -1,5 +1,5 @@
 @tool
-class_name PlanetMesh extends MeshInstance3D
+class_name GeometryMesh extends MeshInstance3D
 
 #region Constants
 ## Used to correctly position the icosahedron vertices.
@@ -35,6 +35,9 @@ var triangle_to_polygon_map:Dictionary
 
 @onready var polygon_grid = $PolygonGrid
 #endregion
+
+
+
 
 
 #region Methods
