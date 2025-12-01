@@ -1,9 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://xv3a1g6bkl8p"]
+[gd_scene load_steps=2 format=3 uid="uid://xv3a1g6bkl8p"]
 
-[ext_resource type="Script" uid="uid://rgjshpy05k28" path="res://scenes/planet/planet_mesh/geometry_mesh.gd" id="1_g25pq"]
-[ext_resource type="PackedScene" uid="uid://p82eosphg6jb" path="res://scenes/polygon_grid.tscn" id="2_rgc57"]
+[ext_resource type="Script" uid="uid://rgjshpy05k28" path="res://scenes/planet/planet_mesh/geometry_mesh.gd" id="1_luell"]
 
 [node name="PlanetMesh" type="MeshInstance3D"]
-script = ExtResource("1_g25pq")
-
-[node name="PolygonGrid" parent="." instance=ExtResource("2_rgc57")]
+script = ExtResource("1_luell")
