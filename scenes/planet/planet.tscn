@@ -1,10 +1,12 @@
-[gd_scene load_steps=40 format=3 uid="uid://bs3v881b3xsa4"]
+[gd_scene load_steps=44 format=3 uid="uid://bs3v881b3xsa4"]
 
 [ext_resource type="Script" uid="uid://i4kx2f4bimfq" path="res://scenes/planet/planet.gd" id="1_25nq4"]
 [ext_resource type="Script" uid="uid://b1usihhdgu5db" path="res://resources/planet_data.gd" id="3_2vvio"]
 [ext_resource type="Script" uid="uid://74w0pmyj3alp" path="res://scenes/planet/tectonic_plate.gd" id="4_42vvu"]
 [ext_resource type="Shader" uid="uid://c7tyyvxtk02an" path="res://resources/planet_shaders/plate_shader.gdshader" id="4_vvtdt"]
-[ext_resource type="PackedScene" uid="uid://bmo4eqlutn4m0" path="res://scenes/planet/mesh_handler.tscn" id="5_2vvio"]
+[ext_resource type="PackedScene" uid="uid://bmo4eqlutn4m0" path="res://scenes/planet/geometry_mesh/geometry_mesh_handler.tscn" id="5_2vvio"]
+[ext_resource type="Shader" uid="uid://djuy75sofyvks" path="res://resources/planet_shaders/wireframe.gdshader" id="6_42vvu"]
+[ext_resource type="PackedScene" uid="uid://dlkoufx0l1yln" path="res://scenes/planet/graphical_mesh/graphical_mesh_handler.tscn" id="6_un7fp"]
 
 [sub_resource type="NoiseTexture3D" id="NoiseTexture3D_un7fp"]
 
@@ -275,18 +277,44 @@ plate_colour = Color(0.15442199, 0.9610152, 0.7532797, 1)
 continental = true
 edge_tile_indices = PackedInt32Array(762, 731, 752, 758, 234, 748, 750, 737, 738, 233, 230, 759, 742, 2052, 751, 808, 740, 790, 739, 231, 2041, 228, 2040, 2038, 2043, 182, 183, 2042, 903, 188, 796, 789, 793, 800, 776, 189)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hs28e"]
+render_priority = 0
+shader = ExtResource("6_42vvu")
+
+[sub_resource type="SphereMesh" id="SphereMesh_un7fp"]
+material = SubResource("ShaderMaterial_hs28e")
+radius = 1.1
+height = 2.2
+radial_segments = 32
+rings = 7
+
 [node name="Planet" type="Node3D"]
 script = ExtResource("1_25nq4")
 data = SubResource("Resource_vvtdt")
 tectonic_plates = Array[ExtResource("4_42vvu")]([SubResource("Resource_un7fp"), SubResource("Resource_ihcuv"), SubResource("Resource_7l8pb"), SubResource("Resource_8h18q"), SubResource("Resource_bt3oc"), SubResource("Resource_pmt4k"), SubResource("Resource_cxri2"), SubResource("Resource_s1kie"), SubResource("Resource_u6mf5"), SubResource("Resource_87dei"), SubResource("Resource_m0h5o"), SubResource("Resource_ygnav"), SubResource("Resource_yipvu"), SubResource("Resource_5payr"), SubResource("Resource_p3pc1"), SubResource("Resource_2ekm0"), SubResource("Resource_ppkou"), SubResource("Resource_3ul2v"), SubResource("Resource_pqy50"), SubResource("Resource_q5coe"), SubResource("Resource_hdwuw"), SubResource("Resource_0tibf"), SubResource("Resource_3eofd"), SubResource("Resource_4q0xa"), SubResource("Resource_qp4jn"), SubResource("Resource_0q2dg"), SubResource("Resource_cskdv"), SubResource("Resource_chiph"), SubResource("Resource_618pi"), SubResource("Resource_xe3dk")])
 random_seed = 10
+plate_view = null
+temp_view = null
+altitude_view = null
+rebuild = null
+regen_climate = null
+regen_plates = null
 max_alt = 17.434829235076904
 min_alt = -17.49208104610443
 max_temp = 34.99999999011837
 min_temp = -26.821679793485565
 
-[node name="MeshHandler" parent="." instance=ExtResource("5_2vvio")]
+[node name="GeometryMeshHandler" parent="." instance=ExtResource("5_2vvio")]
+
+[node name="GraphicalMeshHandler" parent="." instance=ExtResource("6_un7fp")]
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.9405789, 0.3395753, 0, -0.3395753, 0.9405789, 0, 0.8761467, 2.3899446)
 visible = false
+
+[node name="latitude and longitude" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("SphereMesh_un7fp")
+skeleton = NodePath("../..")
+
+[node name="DirectionVectors" type="Node3D" parent="."]
