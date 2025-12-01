@@ -34,6 +34,9 @@ func build_planet_mesh():
 	print("Planet build time: ", (Time.get_ticks_usec() - planet.start_time)/1_000_000.0)
 
 
+func build_graphics_mesh():
+	pass
+
 func generate_planet_shape():
 	planet_mesh.clear()
 	planet_mesh.generate_icosahedron(get_parent().data.resolution)
