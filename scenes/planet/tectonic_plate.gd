@@ -12,7 +12,7 @@ class_name TectonicPlate extends Resource
 @export var continental := false
 @export var edge_tile_indices:PackedInt32Array
 
-var parent_mesh:PlanetMesh
+var parent_mesh:GeometryMesh
 var drift_vector_node:MeshInstance3D
 var drift_vector_mesh:ImmediateMesh
 
