@@ -26,7 +26,7 @@ func _process(delta: float) -> void:
 static func create_tiles(planet:Planet):
 	var tiles:Array[Tile]
 	
-	for i in planet.polygons.size():
+	for i in planet.mesh_handler.planet_mesh.polygons.size():
 		tiles.push_back(Tile.new())
 		tiles[i].init_geometry(planet.mesh_handler.planet_mesh.polygons[i])
 		
