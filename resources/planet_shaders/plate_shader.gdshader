@@ -1,7 +1,5 @@
 shader_type spatial;
 
-
-
 instance uniform bool show_plates;
 instance uniform bool show_temp;
 instance uniform float max_temp;
@@ -43,11 +41,12 @@ void vertex() {
 	plate_col = CUSTOM0;
 	// r = altitude, g = temperature, b = empty
 	cust1 = CUSTOM1;
-	
+
 	//VERTEX = VERTEX * sqrt(cust1.r + 1.0);
 	//sampler_val = texture(surface_noise,VERTEX).r * 5.0;
-	
 }
+
+
 
 void fragment() {
 	float alt = cust1.r;
@@ -56,12 +55,12 @@ void fragment() {
 	if (show_plates) {
 		ALBEDO = plate_col.rgb;
 	}
-	
+
 	else if (show_temp) {
 		vec3 heat_max = RED;
 		vec3 heat_mid = GREEN;
 		vec3 heat_min = BLUE;
-		
+
 		/* To scale temperature correctly:
 			1) Normalise the range of values
 			2) If the temperature is higher than the mid-point, subtract 0.5
@@ -86,13 +85,13 @@ void fragment() {
 			// GREEN = 20, RED = 30
 			ALBEDO = mix(GREEN,RED, (temp-20.0)/10.0);
 		}
-		
+
 	}
-	
+
 	// Altitude view. Sea level is grey, mountains turn green, trenches turn blue
 	else if(show_altitude) {
 		//ALBEDO = vec3(1.0) * (cust1.r)/10.0 + 0.5;
-		
+
 		if (alt > 0.0) {
 			ALBEDO = mix(NEUTRAL_ALT,MAX_ALT,alt/max_alt);
 		}
@@ -103,7 +102,7 @@ void fragment() {
 			ALBEDO = vec3(NEUTRAL_ALT);
 		}
 	}
-	
+
 	// Standard geographical view
 	else {
 		if (alt < sea_level) {
@@ -116,9 +115,9 @@ void fragment() {
 			ALBEDO = mix(vec3(0.1),MOUNTAIN,alt/max_alt);
 		}
 
-		
-		
-		
+
+
+
 		//ALBEDO = BLACK;
 		//if (cust1.r > min_alt) {
 			//ALBEDO = DEEP_OCEAN;
@@ -151,7 +150,7 @@ void fragment() {
 			////ALBEDO = mix(MOUNTAIN, WHITE, alt - (max_alt * 0.8));
 		//}
 		////ALBEDO = mix(DEEP_OCEAN, MOUNTAIN, alt/(max_alt - min_alt));
-		
+
 	}
 }
 
