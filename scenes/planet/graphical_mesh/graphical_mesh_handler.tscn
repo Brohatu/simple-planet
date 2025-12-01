@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dlkoufx0l1yln"]
+
+[ext_resource type="PackedScene" uid="uid://cx72kmuwn44vc" path="res://scenes/planet/graphical_mesh/graphical_mesh.tscn" id="1_1wltu"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_onjrk"]
+
+[node name="GraphicalMeshHandler" type="Node3D"]
+
+[node name="GraphicalMesh" parent="." instance=ExtResource("1_1wltu")]
+mesh = SubResource("ArrayMesh_onjrk")

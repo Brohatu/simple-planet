@@ -1,9 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://cx72kmuwn44vc"]
-
-[ext_resource type="Script" uid="uid://cyefw6vx1bkfg" path="res://scenes/planet/graphical_mesh.gd" id="1_gh48i"]
-
-[sub_resource type="ArrayMesh" id="ArrayMesh_wg1qe"]
-
-[node name="GraphicalMesh" type="MeshInstance3D"]
-mesh = SubResource("ArrayMesh_wg1qe")
-script = ExtResource("1_gh48i")

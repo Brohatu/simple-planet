@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=4 uid="uid://c5tsych7ometu"]
+
+[ext_resource type="Script" uid="uid://bhw54b1fk78wv" path="res://scenes/planet/geometry_mesh/planet_mesh2.gd" id="1_hkmrs"]
+[ext_resource type="Script" uid="uid://b1usihhdgu5db" path="res://resources/planet_data.gd" id="2_ydvi0"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_hkmrs"]
+_surfaces = [{
+"aabb": AABB(-0.8506508, -0.8506508, -0.8506508, 1.7013016, 1.7013016, 1.7013016),
+"format": 34359738375,
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 60,
+"vertex_data": PackedByteArray("AAAAAFCWBj9AxFk/QMRZvwAAAABQlgY/UJYGv0DEWT8AAAAAUJYGP0DEWT8AAAAAAAAAAFCWBj9AxFk/UJYGv0DEWT8AAAAAAAAAAFCWBj9AxFm/UJYGP0DEWT8AAAAAUJYGv0DEWT8AAAAAQMRZvwAAAABQlga/AAAAAFCWBj9AxFm/UJYGv0DEWT8AAAAAQMRZvwAAAABQlgY/QMRZvwAAAABQlga/UJYGv0DEWT8AAAAAQMRZPwAAAABQlgY/AAAAAFCWBj9AxFk/UJYGP0DEWT8AAAAAAAAAAFCWBr9AxFk/QMRZvwAAAABQlgY/AAAAAFCWBj9AxFk/UJYGv0DEWb8AAAAAQMRZvwAAAABQlga/QMRZvwAAAABQlgY/AAAAAFCWBr9AxFm/AAAAAFCWBj9AxFm/QMRZvwAAAABQlga/QMRZPwAAAABQlga/UJYGP0DEWT8AAAAAAAAAAFCWBj9AxFm/AAAAAFCWBr9AxFk/QMRZPwAAAABQlgY/UJYGP0DEWb8AAAAAUJYGv0DEWb8AAAAAAAAAAFCWBr9AxFk/UJYGP0DEWb8AAAAAAAAAAFCWBr9AxFm/UJYGv0DEWb8AAAAAUJYGP0DEWb8AAAAAQMRZPwAAAABQlga/AAAAAFCWBr9AxFm/UJYGP0DEWb8AAAAAQMRZPwAAAABQlgY/QMRZPwAAAABQlga/UJYGP0DEWb8AAAAAAAAAAFCWBj9AxFk/QMRZPwAAAABQlgY/AAAAAFCWBr9AxFk/QMRZvwAAAABQlgY/AAAAAFCWBr9AxFk/UJYGv0DEWb8AAAAAQMRZvwAAAABQlga/UJYGv0DEWb8AAAAAAAAAAFCWBr9AxFm/AAAAAFCWBj9AxFm/AAAAAFCWBr9AxFm/QMRZPwAAAABQlga/UJYGP0DEWT8AAAAAQMRZPwAAAABQlga/QMRZPwAAAABQlgY/VFWqqv9//59UVaqq/3//n1RVqqr/f/+f/3+e3Dgs4rn/f57cOCziuf9/ntw4LOK5YKP//zkM4qlgo///OQziqWCj//85DOKpqipU1f8//5+qKlTV/z//n6oqVNX/P/+fYCNgo8Zz/69gI2CjxnP/r2AjYKPGc/+vqqqqqv8//7+qqqqq/z//v6qqqqr/P/+/nlz/f/+fG5aeXP9//58blp5c/3//nxuWYCOeXMZz/89gI55cxnP/z2AjnlzGc//PAACe3P9fG5YAAJ7c/18blgAAntz/XxuWVNVU1QAAAIBU1VTVAAAAgFTVVNUAAACAqqpUVf8//5+qqlRV/z//n6qqVFX/P/+f/39gIzkM4qn/f2AjOQziqf9/YCM5DOKpYKMAADgs4rlgowAAOCziuWCjAAA4LOK5VNWqKv9//59U1aoq/3//n1TVqir/f/+fntyeXMZz/6+e3J5cxnP/r57cnlzGc/+vYKP/f/9fG5Zgo/9//18blmCj/3//XxuWVFVUVQAAAIBUVVRVAAAAgFRVVFUAAACAqiqqKv8//7+qKqoq/z//v6oqqir/P/+///+e3P+fG5b//57c/58blv//ntz/nxuWntxgo8Zz/8+e3GCjxnP/z57cYKPGc//P")
+}]
+
+[sub_resource type="Resource" id="Resource_5cy5e"]
+script = ExtResource("2_ydvi0")
+resolution = 3
+number_of_plates = 2
+metadata/_custom_type_script = "uid://b1usihhdgu5db"
+
+[node name="PlanetMesh2" type="MeshInstance3D"]
+mesh = SubResource("ArrayMesh_hkmrs")
+script = ExtResource("1_hkmrs")
+data = SubResource("Resource_5cy5e")
