@@ -2,7 +2,7 @@
 class_name GraphicalMesh extends MeshInstance3D
 
 
-var planet_mesh:PlanetMesh
+var planet_mesh:GeometryMesh
 
 
 

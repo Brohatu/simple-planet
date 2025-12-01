@@ -77,7 +77,7 @@ var start_time:float
 
 #@onready var planet_mesh_inst:PlanetMesh = $PlanetMesh
 @onready var mesh_handler := $MeshHandler as MeshHandler
-@onready var planet_mesh :=  $MeshHandler/PlanetMesh as PlanetMesh
+@onready var planet_mesh :=  $MeshHandler/PlanetMesh as GeometryMesh
 #@onready var grid_mesh_inst:PlanetMesh = $GridMesh
 #endregion
 

@@ -2,7 +2,7 @@
 class_name MeshHandler extends Node3D
 
 
-@onready var planet_mesh := $PlanetMesh as PlanetMesh
+@onready var planet_mesh := $PlanetMesh as GeometryMesh
 @onready var planet := $".." as Planet
 @onready var planet_data := planet.data
 

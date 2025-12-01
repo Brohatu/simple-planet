@@ -26,7 +26,7 @@ var dist_to_seed:float = INF
 	set(val):
 		drift_vector = val.normalized()
 
-var parent_mesh:PlanetMesh
+var parent_mesh:GeometryMesh
 
 static var _index_counter = 0
 
