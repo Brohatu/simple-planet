@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://p82eosphg6jb"]
 
-[ext_resource type="Script" uid="uid://cdys545fohiyq" path="res://scenes/planet_mesh/polygon_grid.gd" id="1_vq10c"]
+[ext_resource type="Script" uid="uid://cdys545fohiyq" path="res://scenes/planet/planet_mesh/polygon_grid.gd" id="1_vq10c"]
 
 [node name="PolygonGrid" type="Node3D"]
 script = ExtResource("1_vq10c")
