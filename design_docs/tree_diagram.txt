@@ -2,14 +2,20 @@ Planet design doc
 
 Planet: Container for planet data and meshes 
 MeshHandler: Interface for generating and running all of the planet meshes
-PlanetMesh:
+PlanetMesh: Deprecated
 GeometryMesh: Generates base planet mesh.
 GeometryMeshHandler: Interface for GeometryMesh.
 GraphicsMesh: Responsible for colouring planet.
-GraphicsMeshHandler
+GraphicsMeshHandler:
 Polygon:Physical representation of each tile in the mesh
 
 Tile: Data representation of each discrete position on the planet
+
+
+
+
+	
+
 
 
 
