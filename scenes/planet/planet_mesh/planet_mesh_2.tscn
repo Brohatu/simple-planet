@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=4 uid="uid://c5tsych7ometu"]
 
-[ext_resource type="Script" uid="uid://bhw54b1fk78wv" path="res://scenes/planet_mesh/planet_mesh2.gd" id="1_hkmrs"]
+[ext_resource type="Script" uid="uid://bhw54b1fk78wv" path="res://scenes/planet/planet_mesh/planet_mesh2.gd" id="1_hkmrs"]
 [ext_resource type="Script" uid="uid://b1usihhdgu5db" path="res://resources/planet_data.gd" id="2_ydvi0"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_hkmrs"]
