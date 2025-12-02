@@ -25,10 +25,9 @@ class_name Planet extends Node3D
 @export_group("Shader Modes")
 @export var plate_view := false:
 	set(val):
-		var p_mesh = geometry_mesh_handler.planet_mesh
-		if p_mesh:
+		if geometry_mesh_handler:
 			plate_view = val
-			p_mesh.set_instance_shader_parameter("show_plates", plate_view)
+			geometry_mesh_handler.planet_mesh.set_instance_shader_parameter("show_plates", plate_view)
 		else:
 			plate_view = false
 ##@export var temp_view := false:
@@ -109,7 +108,7 @@ func _process(_delta: float) -> void:
 
 func build():
 	seed(random_seed)
-	print("Starting planet build.")
+	print("\nStarting planet build.")
 	start_time = Time.get_ticks_usec()
 	geometry_mesh_handler.initialise_planet_meshes(data)
 	#geometry_mesh_handler.build_graphics_mesh()
