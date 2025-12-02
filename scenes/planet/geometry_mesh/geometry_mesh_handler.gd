@@ -1,6 +1,6 @@
 @tool
 class_name GeometryMeshHandler extends Node3D
-
+# Interface for planet meshes
 
 @onready var planet_mesh := $PlanetMesh as GeometryMesh
 @onready var grid_mesh := $GridMesh as GeometryMesh
@@ -28,12 +28,15 @@ func initialise_planet_meshes(data):
 	planet_mesh.clear()
 	planet_mesh.generate_icosahedron(get_parent().data.resolution)
 	planet_mesh.tesselate_ico_mesh()
-	planet_mesh.mesh = planet_mesh.create_mesh(ArrayMesh.new())
+	#planet_mesh.mesh = planet_mesh.create_mesh(ArrayMesh.new())
 	print("Planet mesh done: ", (Time.get_ticks_usec() - start_time)/1_000_000.0)
-	planet_mesh.mesh.surface_set_material(0,data.surface_material)
+	
 	# Grid mesh
 	grid_mesh = PolygonGrid.generate_grid_from_mesh(planet_mesh,0.4)
 
+func commit_meshes(data):
+	planet_mesh.mesh = planet_mesh.create_mesh(ArrayMesh.new())
+	planet_mesh.mesh.surface_set_material(0,data.surface_material)
 
 #func do_rebuild():
 	#var mdt = MeshDataTool.new()
