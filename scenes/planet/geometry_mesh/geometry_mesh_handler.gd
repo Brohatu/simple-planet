@@ -34,10 +34,12 @@ func initialise_planet_meshes(data):
 	# Grid mesh
 	grid_mesh = PolygonGrid.generate_grid_from_mesh(planet_mesh,0.4)
 
+
 func commit_meshes(data):
 	planet_mesh.mesh = planet_mesh.create_mesh(ArrayMesh.new())
 	planet_mesh.mesh.surface_set_material(0,data.surface_material)
 	grid_mesh.mesh = grid_mesh.create_mesh(ArrayMesh.new())
+
 
 #func do_rebuild():
 	#var mdt = MeshDataTool.new()
