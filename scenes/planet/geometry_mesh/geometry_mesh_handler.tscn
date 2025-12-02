@@ -8,9 +8,9 @@
 script = ExtResource("1_n5d2j")
 
 [node name="PlanetMesh" parent="." instance=ExtResource("2_vwdnu")]
-skeleton = NodePath("../..")
+vertices = PackedVector3Array()
 
 [node name="GridMesh" parent="." instance=ExtResource("2_vwdnu")]
-skeleton = NodePath("../PolygonGrid")
+vertices = PackedVector3Array()
 
 [node name="PolygonGrid" parent="." instance=ExtResource("5_vwdnu")]
