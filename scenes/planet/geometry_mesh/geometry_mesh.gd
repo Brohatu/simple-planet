@@ -386,4 +386,13 @@ func clear():
 	vertices_in_polygon.clear()
 
 
+func get_number_of_vertices():
+	return vertices.size()
+
+func get_number_of_faces():
+	return faces.size()
+
+func get_number_of_polygons():
+	return polygons.size()
+
 #endregion
