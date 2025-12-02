@@ -38,7 +38,7 @@ static func generate_grid_from_mesh(grid_mesh:GeometryMesh, planet_mesh:Geometry
 		v.normalized()
 	grid_mesh.vertices = vs
 	grid_mesh.faces = fs
-	grid_mesh.polygons = planet_mesh.polygons
+	grid_mesh.polygons = planet_mesh.polygons.duplicate()
 	#grid.vertex_radius = ts.vertex_radius
 	#grid.vertices_in_polygon = ts.vertices_in_polygon
 	#return grid
