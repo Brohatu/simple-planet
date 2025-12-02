@@ -4,31 +4,33 @@ class_name Planet extends Node3D
 #
 #
 #region Properties
-#@export var data:PlanetData:
-	#set(val):
-		#data = val
-		#print("Planet data update")
-		#if data != null and not data.is_connected("changed", build):
-			#data.connect("changed", build)
-#
+@export var data:PlanetData:
+	set(val):
+		data = val
+		print("Planet data update")
+		if data != null and not data.is_connected("changed", build):
+			data.connect("changed", build)
+
 ##@export var g_data:GridData:
 	##set(val):
 		##g_data = val
 		##print("Grid data update")
 		##if g_data != null and not g_data.is_connected("changed", build_grid):
 			##g_data.connect("changed", build_grid)
-#@export var tectonic_plates:Array[TectonicPlate]
-#@export var tiles:Array[Tile]
+
+@export var tectonic_plates:Array[TectonicPlate]
+@export var tiles:Array[Tile]
 @export var random_seed:int
-#
-##@export_group("Shader Modes")
-##@export var plate_view := false:
-	##set(val):
-		##if planet_mesh:
-			##plate_view = val
-			##planet_mesh.set_instance_shader_parameter("show_plates", plate_view)
-		##else:
-			##plate_view = false
+
+@export_group("Shader Modes")
+@export var plate_view := false:
+	set(val):
+		var p_mesh = geometry_mesh_handler.planet_mesh
+		if p_mesh:
+			plate_view = val
+			p_mesh.set_instance_shader_parameter("show_plates", plate_view)
+		else:
+			plate_view = false
 ##@export var temp_view := false:
 	##set(val):
 		##if planet_mesh:
@@ -44,12 +46,12 @@ class_name Planet extends Node3D
 		##else:
 			##altitude_view = false
 #
-#@export_group("Regenerate Planet")
-#@export var rebuild := false:
-	#set(val):
-		#rebuild = false
-		#build()
-		##do_rebuild()
+@export_group("Regenerate Planet")
+@export var rebuild := false:
+	set(val):
+		rebuild = false
+		build()
+
 ##@export var regen_climate := false:
 	##set(val):
 		##regen_climate = false
@@ -58,6 +60,7 @@ class_name Planet extends Node3D
 			##p.altitude = 0.0
 			##p.temperature = 0.0
 		##generate_climate()
+
 ##@export var regen_plates := false:
 	##set(val):
 		##regen_plates = false
@@ -108,14 +111,13 @@ func build():
 	seed(random_seed)
 	print("Starting planet build.")
 	start_time = Time.get_ticks_usec()
-
-	geometry_mesh_handler.build_planet_mesh()
-	geometry_mesh_handler.build_graphics_mesh()
+	geometry_mesh_handler.initialise_planet_meshes(data)
+	#geometry_mesh_handler.build_graphics_mesh()
 	
 	#Tile.create_tiles(self)
 	
 	# Create plates
-	
+	generate_tectonic_plates()
 	# Prepare rivers
 	
 	# Prepare topography
@@ -124,10 +126,10 @@ func build():
 	
 	print("Build done: " + str((Time.get_ticks_usec() - start_time)/1_000_000.0))
 
-#
-#
-#
-#
+
+
+
+
 ##func build_grid():
 	##grid_mesh_inst.clear()
 	##grid_mesh_inst.generate_icosahedron(data.resolution)
@@ -136,8 +138,8 @@ func build():
 	##grid_mesh_inst.mesh = grid_mesh_inst.create_mesh(ArrayMesh.new())
 	##grid_mesh_inst.scale = Vector3.ONE / g_data.line_width + Vector3(0.01,0.01,0.01)
 	##grid_mesh_inst.mesh.surface_set_material(0,data.border_material)
-#
-#
+
+
 ##func seed_tectonic_plates():
 	### Initialise temp TectonicPlate array.
 	##var tps:Array[TectonicPlate] = []
@@ -158,132 +160,132 @@ func build():
 		###p.colour = tps[tpi].plate_colour
 		###p.colour = Color.BLACK
 	##return [tps, unassigned_tiles]
-#
-#
+
+
 #region Tectonic Plates methods
-#func voronoi_plates(tps:Array[TectonicPlate], unassigned_tiles:Array[Polygon]):
-	## Assign each tile to the closest seed tile. 
-	#while unassigned_tiles.size() > 0:
-		#var p:Polygon = unassigned_tiles.pop_back()
-		### Index of Polygon p
-		#var pi := p.center_vertex_index
-		### The current best plate for the tile. 
-		#var closest_plate:TectonicPlate
-		#
-		#for tp in tps:
-			### The position of the seed tile.
-			#var seed_tile_pos := planet_mesh.vertices[tp.seed_tile_index]
-			### The position of the current tile.
-			#var current_tile_pos := planet_mesh.vertices[pi]
-			## Using distance squared is faster than distance for comparing
-			## vectors.
-			#var dist_2 = current_tile_pos.distance_squared_to(seed_tile_pos)
-			#
-			#if dist_2 < p.dist_to_seed:
-				#closest_plate = tp
-				#p.dist_to_seed = dist_2
-		#
-		#closest_plate.tile_indices.push_back(pi)
-		#p.drift_vector = closest_plate.drift_vector.cross(p.get_centre_vertex())
-		##$DirectionVectors.add_child(p.draw_drift_direction())
-		#p.colour = closest_plate.plate_colour
-#
-#
-#func random_fill_plates(tps:Array[TectonicPlate], unassigned_tiles:Array[Polygon]):
-	#while unassigned_tiles.size() > 0:
-		#for tp in tps:
-			#var indices = Array(tp.tile_indices)
-			#var new_tile
-			#var tile_to_expand = planet_mesh.polygons[indices.pick_random()]
-			#new_tile = planet_mesh.polygons[tile_to_expand.adjacent_polygon_indices.pick_random()]
-			#if new_tile in unassigned_tiles:
-				#tp.tile_indices.push_back(new_tile.center_vertex_index)
-				#unassigned_tiles.erase(new_tile)
-				#new_tile.drift_vector = tp.drift_vector.cross(new_tile.get_centre_vertex())
-				#new_tile.colour = tp.plate_colour
-				#print("Tiles remaining: ", unassigned_tiles.size())
-				##$DirectionVectors.add_child(new_tile.draw_drift_direction())
-#
-#
-#func generate_tectonic_plates():
-	## Initialise temp TectonicPlate array.
-	#var tps:Array[TectonicPlate] = []
-	#tps.resize(data.number_of_plates)
-	### Array of unassigned Polygons.
-	#var unassigned_tiles:Array[Polygon] = Array(planet_mesh.polygons.duplicate())
-	#
-	## Select a random seed tile for each TectonicPlate.
-	#for tpi in range(tps.size()):
-		### Randomly selected index.
-		#var selection := randi_range(0, unassigned_tiles.size() - 1) 
-		### Random seed tile.
-		#var p:Polygon = unassigned_tiles.pop_at(selection)
-		### Index of seed tile
-		#var pi := p.center_vertex_index
-		## Create new plate at plate index tpi
-		#tps[tpi] = TectonicPlate.new()
-		## Push seed plate index to plate
-		#tps[tpi].tile_indices.push_back(p.center_vertex_index)
-		#tps[tpi].seed_tile_index = pi
-		## Assign drift axis to plate
-		#tps[tpi].drift_vector = Vector3(randf_range(-1.0,1.0),randf_range(-1.0,1.0),randf_range(-1.0,1.0)).normalized()
-		## Assign drift direction to seed plate
-		#p.drift_vector = tps[tpi].drift_vector.cross(p.get_centre_vertex())
-		##$DirectionVectors.add_child(p.draw_drift_direction())
-		##p.colour = tps[tpi].plate_colour
-		##p.colour = Color.BLACK
-	#
-	## Fuse nearby plates a few times to get less blocky shapes
-	#
-	## Tiles go to closest plate seed
-	##voronoi_plates(tps,unassigned_tiles)
-	#
-	## Plates are expanded at random
-	#random_fill_plates(tps, unassigned_tiles)
-	#
-	## Calculate tile dependent plate data for each plate
+func voronoi_plates(tps:Array[TectonicPlate], unassigned_tiles:Array[Polygon]):
+	# Assign each tile to the closest seed tile. 
+	while unassigned_tiles.size() > 0:
+		var p:Polygon = unassigned_tiles.pop_back()
+		## Index of Polygon p
+		var pi := p.center_vertex_index
+		## The current best plate for the tile. 
+		var closest_plate:TectonicPlate
+		
+		for tp in tps:
+			## The position of the seed tile.
+			var seed_tile_pos := geometry_mesh_handler.planet_mesh.vertices[tp.seed_tile_index]
+			## The position of the current tile.
+			var current_tile_pos := planet_mesh.vertices[pi]
+			# Using distance squared is faster than distance for comparing
+			# vectors.
+			var dist_2 = current_tile_pos.distance_squared_to(seed_tile_pos)
+			
+			if dist_2 < p.dist_to_seed:
+				closest_plate = tp
+				p.dist_to_seed = dist_2
+		
+		closest_plate.tile_indices.push_back(pi)
+		p.drift_vector = closest_plate.drift_vector.cross(p.get_centre_vertex())
+		#$DirectionVectors.add_child(p.draw_drift_direction())
+		p.colour = closest_plate.plate_colour
+
+
+func random_fill_plates(tps:Array[TectonicPlate], unassigned_tiles:Array[Polygon]):
+	while unassigned_tiles.size() > 0:
+		for tp in tps:
+			var indices = Array(tp.tile_indices)
+			var new_tile
+			var tile_to_expand = planet_mesh.polygons[indices.pick_random()]
+			new_tile = planet_mesh.polygons[tile_to_expand.adjacent_polygon_indices.pick_random()]
+			if new_tile in unassigned_tiles:
+				tp.tile_indices.push_back(new_tile.center_vertex_index)
+				unassigned_tiles.erase(new_tile)
+				new_tile.drift_vector = tp.drift_vector.cross(new_tile.get_centre_vertex())
+				new_tile.colour = tp.plate_colour
+				print("Tiles remaining: ", unassigned_tiles.size())
+				#$DirectionVectors.add_child(new_tile.draw_drift_direction())
+
+
+func generate_tectonic_plates():
+	# Initialise temp TectonicPlate array.
+	var tps:Array[TectonicPlate] = []
+	tps.resize(data.number_of_plates)
+	## Array of unassigned Polygons.
+	var unassigned_tiles:Array[Polygon] = Array(planet_mesh.polygons.duplicate())
+	
+	# Select a random seed tile for each TectonicPlate.
+	for tpi in range(tps.size()):
+		## Randomly selected index.
+		var selection := randi_range(0, unassigned_tiles.size() - 1) 
+		## Random seed tile.
+		var p:Polygon = unassigned_tiles.pop_at(selection)
+		## Index of seed tile
+		var pi := p.center_vertex_index
+		# Create new plate at plate index tpi
+		tps[tpi] = TectonicPlate.new()
+		# Push seed plate index to plate
+		tps[tpi].tile_indices.push_back(p.center_vertex_index)
+		tps[tpi].seed_tile_index = pi
+		# Assign drift axis to plate
+		tps[tpi].drift_vector = Vector3(randf_range(-1.0,1.0),randf_range(-1.0,1.0),randf_range(-1.0,1.0)).normalized()
+		# Assign drift direction to seed plate
+		p.drift_vector = tps[tpi].drift_vector.cross(p.get_centre_vertex())
+		#$DirectionVectors.add_child(p.draw_drift_direction())
+		#p.colour = tps[tpi].plate_colour
+		#p.colour = Color.BLACK
+	
+	# Fuse nearby plates a few times to get less blocky shapes
+	
+	# Tiles go to closest plate seed
+	#voronoi_plates(tps,unassigned_tiles)
+	
+	# Plates are expanded at random
+	random_fill_plates(tps, unassigned_tiles)
+	
+	# Calculate tile dependent plate data for each plate
+	for tp in tps:
+		tp.parent_mesh = planet_mesh
+		#var rotation_vector = tp.draw_rotation_vector()
+		#add_child(rotation_vector)
+		tp.calculate_edge_tiles()
+	
+	# Assign Oceanic plates
+	tps = assign_oceanic_plates(tps)
+	tectonic_plates = tps
+	
+	print("Tectonic Plates done: " + str((Time.get_ticks_usec() - start_time)/1_000_000.0))
+
+
+func assign_oceanic_plates(tps:Array[TectonicPlate]):
+	var ratio := data.tectonic_plate_ratio
+	var continental_plates:Array[TectonicPlate] = []
+	for i in range(tps.size() * ratio):
+		var selected_plate = 0
+		while !selected_plate:
+			selected_plate = tps.pick_random()
+			if not continental_plates.has(selected_plate):
+				selected_plate.continental = true
+				continental_plates.push_back(selected_plate)
+			else:
+				selected_plate = 0
+	
 	#for tp in tps:
-		#tp.parent_mesh = planet_mesh
-		##var rotation_vector = tp.draw_rotation_vector()
-		##add_child(rotation_vector)
-		#tp.calculate_edge_tiles()
-	#
-	## Assign Oceanic plates
-	#tps = assign_oceanic_plates(tps)
-	#tectonic_plates = tps
-	#
-	#print("Tectonic Plates done: " + str((Time.get_ticks_usec() - start_time)/1_000_000.0))
-#
-#
-#func assign_oceanic_plates(tps:Array[TectonicPlate]):
-	#var ratio := data.tectonic_plate_ratio
-	#var continental_plates:Array[TectonicPlate] = []
-	#for i in range(tps.size() * ratio):
-		#var selected_plate = 0
-		#while !selected_plate:
-			#selected_plate = tps.pick_random()
-			#if not continental_plates.has(selected_plate):
-				#selected_plate.continental = true
-				#continental_plates.push_back(selected_plate)
-			#else:
-				#selected_plate = 0
-	#
-	##for tp in tps:
-		##if tp.continental:
-			##tp.plate_colour = Color.DARK_GREEN
-		##else:
-			##tp.plate_colour = Color.BLUE
-	#
-	#return tps
-#
-#
+		#if tp.continental:
+			#tp.plate_colour = Color.DARK_GREEN
+		#else:
+			#tp.plate_colour = Color.BLUE
+	
+	return tps
+
+
 ##func set_tile_colours():
 	##var arrays = planet_mesh_inst.mesh.surface_get_arrays(0)
 	##var col_arr = arrays[Mesh.ARRAY_COLOR]
 	###for 
 #
 #endregion
-#
+
 #region Climate methods
 #func generate_climate():
 	## Prepare latitude and longitude of polygons
@@ -293,8 +295,8 @@ func build():
 	#planet_mesh.set_instance_shader_parameter("sea_level", data.sea_level)
 	#calculate_temperature()
 	#print("Climate done: " + str((Time.get_ticks_usec() - start_time)/1_000_000.0))
-#
-#
+
+
 #func calculate_temperature():
 	#for tp in tectonic_plates:
 		#for pi in tp.tile_indices:
@@ -306,15 +308,15 @@ func build():
 			#else:
 				#p.temperature -= 5.0
 			#p.temperature = temp_lat + temp_alt
-#
+			
 			#if p.temperature > max_temp:
 				#max_temp = p.temperature
 			#elif p.temperature < min_temp:
 				#min_temp = p.temperature
 	#planet_mesh.set_instance_shader_parameter("min_temp", min_temp)
 	#planet_mesh.set_instance_shader_parameter("max_temp", max_temp)
-#
-#
+
+
 ### Calculates the variation in temperature due to latitude. Ranges from +30 at
 ### the equator to -20 at the poles.
 #func calculate_latitude_temp(lat:float) -> float:
