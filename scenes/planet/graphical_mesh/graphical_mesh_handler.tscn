@@ -1,10 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://dlkoufx0l1yln"]
+[gd_scene load_steps=4 format=3 uid="uid://dlkoufx0l1yln"]
 
 [ext_resource type="PackedScene" uid="uid://cx72kmuwn44vc" path="res://scenes/planet/graphical_mesh/graphical_mesh.tscn" id="1_1wltu"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_onjrk"]
 
+[sub_resource type="ArrayMesh" id="ArrayMesh_1wltu"]
+
 [node name="GraphicalMeshHandler" type="Node3D"]
 
-[node name="GraphicalMesh" parent="." instance=ExtResource("1_1wltu")]
+[node name="PlanetGraphicsMesh" parent="." instance=ExtResource("1_1wltu")]
 mesh = SubResource("ArrayMesh_onjrk")
+
+[node name="GridGraphicsMesh" parent="." instance=ExtResource("1_1wltu")]
+mesh = SubResource("ArrayMesh_1wltu")
+skeleton = NodePath("../PlanetGraphicsMesh")

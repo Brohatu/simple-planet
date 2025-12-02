@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cyefw6vx1bkfg" path="res://scenes/planet/graphical_mesh/graphical_mesh.gd" id="1_gh48i"]
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_wg1qe"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_11kt0"]
 
 [node name="GraphicalMesh" type="MeshInstance3D"]
-mesh = SubResource("ArrayMesh_wg1qe")
+mesh = SubResource("ArrayMesh_11kt0")
 script = ExtResource("1_gh48i")
