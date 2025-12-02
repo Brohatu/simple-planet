@@ -4,3 +4,5 @@
 
 [node name="GeometryMesh" type="MeshInstance3D"]
 script = ExtResource("1_luell")
+vertices = PackedVector3Array()
+faces = Array[PackedInt32Array]([])
