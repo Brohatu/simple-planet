@@ -103,7 +103,10 @@ func _ready() -> void:
 
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("ui_accept"):
+		rebuild = true
 	pass
+
 
 
 func build():
@@ -220,7 +223,7 @@ func generate_tectonic_plates():
 		## Random seed tile.
 		var p:Polygon = unassigned_tiles.pop_at(selection)
 		## Index of seed tile
-		var pi := p.center_vertex_index
+		var pi := p.center_vertex_index 
 		# Create new plate at plate index tpi
 		tps[tpi] = TectonicPlate.new()
 		# Push seed plate index to plate
