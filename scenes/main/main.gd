@@ -1,5 +1,12 @@
+@tool
 extends Node3D
 
+
+@export var rebuild:bool:
+	set(val):
+		if val:
+			$Planet.build()
+			val = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
