@@ -9,11 +9,11 @@ static var T := (1.0 + sqrt(5.0))/2.0
 
 #region Variables
 ## Array of vertices making up the Icosphere
-@export var vertices:PackedVector3Array = []
+@export var vertices:PackedVector3Array
 
 ## Array of face arrays. Each face f contains the index of the three vertices that
 ## make up the triangle.
-@export var faces:Array[PackedInt32Array] = []
+@export var faces:Array[PackedInt32Array]
 
 ## An array containing a record of the length of each vertex vi.
 var vertex_radius:Array
@@ -22,7 +22,7 @@ var vertex_radius:Array
 var subdivides:Dictionary
 
 ## Array of Polygons that make up the derived Hexsphere.
-@export var polygons:Array[Polygon] = []
+@export var polygons:Array[Polygon]
 
 ## List of Polygons vertex vi belongs to.
 var vertex_pgon_membership:Array[Array]
@@ -383,6 +383,7 @@ func clear():
 	triangle_to_polygon_map.clear()
 	vertex_radius.clear()
 	subdivides.clear()
+	vertices_in_polygon.clear()
 
 
 #endregion
