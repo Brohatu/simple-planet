@@ -9,8 +9,10 @@ script = ExtResource("1_n5d2j")
 
 [node name="PlanetMesh" parent="." instance=ExtResource("2_vwdnu")]
 vertices = PackedVector3Array()
+faces = Array[PackedInt32Array]([])
 
 [node name="GridMesh" parent="." instance=ExtResource("2_vwdnu")]
 vertices = PackedVector3Array()
+faces = Array[PackedInt32Array]([])
 
 [node name="PolygonGrid" parent="." instance=ExtResource("5_vwdnu")]
