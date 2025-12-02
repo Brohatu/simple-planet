@@ -35,7 +35,7 @@ func initialise_planet_meshes(data):
 	
 	# Grid mesh
 	grid_mesh.clear()
-	PolygonGrid.generate_grid_from_mesh(grid_mesh,planet_mesh,0.1)
+	PolygonGrid.generate_grid_from_mesh(grid_mesh,planet_mesh,0.01)
 	grid_mesh.normalise()
 
 
