@@ -12,14 +12,14 @@ func _process(_delta: float) -> void:
 	pass
 
 
-func generate_grid_from_mesh(ts:GeometryMesh,line_width:float):
-	#var grid := PlanetMesh.new()
+static func generate_grid_from_mesh(planet_mesh:GeometryMesh,line_width:float):
+	var grid := GeometryMesh.new()
 	var vs:PackedVector3Array = []
 	var fs:Array[PackedInt32Array]= []
 	var counter := 0
 	var first_vert_in_pgon_index:int
 	
-	for p:Polygon in ts.polygons:
+	for p:Polygon in planet_mesh.polygons:
 		first_vert_in_pgon_index = counter
 		for bvi in range(p.border_vertex_indices.size()):
 			vs.push_back(line_width * p.get_border_vertex(bvi))
@@ -36,9 +36,9 @@ func generate_grid_from_mesh(ts:GeometryMesh,line_width:float):
 	
 	for v in vs:
 		v.normalized()
-	ts.vertices = vs
-	ts.faces = fs
-	ts.polygons = ts.polygons
+	grid.vertices = vs
+	grid.faces = fs
+	grid.polygons = planet_mesh.polygons
 	#grid.vertex_radius = ts.vertex_radius
 	#grid.vertices_in_polygon = ts.vertices_in_polygon
-	#return ts
+	return grid
