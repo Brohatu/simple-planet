@@ -22,7 +22,7 @@ func _process(_delta: float) -> void:
 
 ## Generates the meshes for the planet and the tile grid
 func initialise_planet_meshes(data):
-	Polygon._index_counter = 0
+	#Polygon._index_counter = 0
 	var start_time = Time.get_ticks_usec()
 	
 	# Planet geometry mesh
