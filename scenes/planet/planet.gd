@@ -1,8 +1,8 @@
 @tool
 class_name Planet extends Node3D
-## Class for building and managing Planet generation and data.
-#
-#
+# Class for building and managing Planet generation and data.
+
+
 #region Properties
 @export var data:PlanetData:
 	set(val):
@@ -30,20 +30,20 @@ class_name Planet extends Node3D
 			geometry_mesh_handler.planet_mesh.set_instance_shader_parameter("show_plates", plate_view)
 		else:
 			plate_view = false
-##@export var temp_view := false:
-	##set(val):
-		##if planet_mesh:
-			##temp_view = val
-			##planet_mesh.set_instance_shader_parameter("show_temp", temp_view)
-		##else:
-			##temp_view = false
-##@export var altitude_view := false:
-	##set(val):
-		##if planet_mesh:
-			##altitude_view = val
-			##planet_mesh.set_instance_shader_parameter("show_altitude", altitude_view)
-		##else:
-			##altitude_view = false
+#@export var temp_view := false:
+	#set(val):
+		#if planet_mesh:
+			#temp_view = val
+			#planet_mesh.set_instance_shader_parameter("show_temp", temp_view)
+		#else:
+			#temp_view = false
+#@export var altitude_view := false:
+	#set(val):
+		#if planet_mesh:
+			#altitude_view = val
+			#planet_mesh.set_instance_shader_parameter("show_altitude", altitude_view)
+		#else:
+			#altitude_view = false
 #
 @export_group("Regenerate Planet")
 @export var rebuild := false:
@@ -51,24 +51,24 @@ class_name Planet extends Node3D
 		rebuild = false
 		build()
 
-##@export var regen_climate := false:
-	##set(val):
-		##regen_climate = false
-		##start_time = Time.get_ticks_usec()
-		##for p in planet_mesh.polygons:
-			##p.altitude = 0.0
-			##p.temperature = 0.0
-		##generate_climate()
+#@export var regen_climate := false:
+	#set(val):
+		#regen_climate = false
+		#start_time = Time.get_ticks_usec()
+		#for p in planet_mesh.polygons:
+			#p.altitude = 0.0
+			#p.temperature = 0.0
+		#generate_climate()
 
-##@export var regen_plates := false:
-	##set(val):
-		##regen_plates = false
-		##tectonic_plates.clear()
-		##for p in planet_mesh.polygons:
-			##p.colour = Color.BLACK
-		##generate_tectonic_plates()
-		##generate_climate()
-#
+#@export var regen_plates := false:
+	#set(val):
+		#regen_plates = false
+		#tectonic_plates.clear()
+		#for p in planet_mesh.polygons:
+			#p.colour = Color.BLACK
+		#generate_tectonic_plates()
+		#generate_climate()
+
 #@export_group("Parameter ranges")
 #@export var max_alt := 0.0
 #@export var min_alt := 0.0
@@ -77,12 +77,12 @@ class_name Planet extends Node3D
 
 var start_time:float
 
-#@onready var planet_mesh_inst:PlanetMesh = $PlanetMesh
 @onready var geometry_mesh_handler := $GeometryMeshHandler as GeometryMeshHandler
-#@onready var planet_mesh :=  $MeshHandler/PlanetMesh as GeometryMesh
-#@onready var grid_mesh_inst:PlanetMesh = $GridMesh
+@onready var graphics_mesh_handler := $GraphicalMeshHandler as GraphicalMeshHandler
+
+
 #endregion
-#
+
 #region Methods
 ## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -108,13 +108,12 @@ func _process(_delta: float) -> void:
 	pass
 
 
-
 func build():
 	seed(random_seed)
 	print("\nStarting planet build.")
 	start_time = Time.get_ticks_usec()
+	# Generate planet geometry
 	geometry_mesh_handler.initialise_planet_meshes(data)
-	#geometry_mesh_handler.build_graphics_mesh()
 	
 	#Tile.create_tiles(self)
 	
@@ -124,9 +123,12 @@ func build():
 	
 	# Prepare topography
 	
-	# 
+	# Generate grid geometry
 	geometry_mesh_handler.commit_meshes(data)
 	print("Build done: " + str((Time.get_ticks_usec() - start_time)/1_000_000.0))
+	
+	# Generate graphics meshes
+	graphics_mesh_handler.initialise_graphics(geometry_mesh_handler,data)
 
 
 

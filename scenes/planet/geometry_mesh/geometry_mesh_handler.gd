@@ -41,9 +41,9 @@ func initialise_planet_meshes(data):
 
 func commit_meshes(data:PlanetData):
 	planet_mesh.mesh = planet_mesh.create_mesh(ArrayMesh.new())
-	planet_mesh.mesh.surface_set_material(0,data.surface_material)
+	planet_mesh.mesh.surface_set_material(0,data.surface_geometry_material)
 	grid_mesh.mesh = grid_mesh.create_mesh(ArrayMesh.new())
-	grid_mesh.mesh.surface_set_material(0,data.border_material)
+	grid_mesh.mesh.surface_set_material(0,data.border_geometry_material)
 
 
 #func do_rebuild():
