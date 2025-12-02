@@ -3,8 +3,8 @@ class_name TectonicPlate extends Resource
 
 #@export var shader = preload("res://resources/planet_shaders/plate_shader.gdshader")
 
-## Array of indices referencing the polygons in the PlanetMesh that are 
-## associated with this TectonicPlate
+## Array of indices referencing the polygons in the [PlanetMesh] that are 
+## associated with this [TectonicPlate]
 @export var tile_indices:PackedInt32Array
 @export var seed_tile_index:int
 @export var drift_vector := Vector3.ZERO
