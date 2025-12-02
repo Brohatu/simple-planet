@@ -22,23 +22,28 @@ func _process(_delta: float) -> void:
 
 ## Generates the meshes for the planet and the tile grid
 func initialise_planet_meshes(data):
+	Polygon._index_counter = 0
 	var start_time = Time.get_ticks_usec()
 	
 	# Planet geometry mesh
 	planet_mesh.clear()
 	planet_mesh.generate_icosahedron(get_parent().data.resolution)
 	planet_mesh.tesselate_ico_mesh()
+	planet_mesh.normalise()
 	#planet_mesh.mesh = planet_mesh.create_mesh(ArrayMesh.new())
 	print("Planet mesh done: ", (Time.get_ticks_usec() - start_time)/1_000_000.0)
 	
 	# Grid mesh
-	grid_mesh = PolygonGrid.generate_grid_from_mesh(planet_mesh,0.4)
+	grid_mesh.clear()
+	PolygonGrid.generate_grid_from_mesh(grid_mesh,planet_mesh,0.1)
+	grid_mesh.normalise()
 
 
-func commit_meshes(data):
+func commit_meshes(data:PlanetData):
 	planet_mesh.mesh = planet_mesh.create_mesh(ArrayMesh.new())
 	planet_mesh.mesh.surface_set_material(0,data.surface_material)
 	grid_mesh.mesh = grid_mesh.create_mesh(ArrayMesh.new())
+	grid_mesh.mesh.surface_set_material(0,data.border_material)
 
 
 #func do_rebuild():
