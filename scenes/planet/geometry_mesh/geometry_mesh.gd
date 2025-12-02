@@ -369,8 +369,8 @@ func create_mesh(m:ArrayMesh) -> ArrayMesh:
 	return st.commit(m)
 
 
-func create_grid_from_mesh(line_width:float):
-	polygon_grid.generate_grid_from_mesh(self,line_width)
+#func create_grid_from_mesh(line_width:float):
+	#polygon_grid.generate_grid_from_mesh(self,line_width)
 
 #endregion
 
