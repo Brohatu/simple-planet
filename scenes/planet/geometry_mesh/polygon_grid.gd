@@ -12,8 +12,8 @@ func _process(_delta: float) -> void:
 	pass
 
 
-static func generate_grid_from_mesh(planet_mesh:GeometryMesh,line_width:float):
-	var grid := GeometryMesh.new()
+static func generate_grid_from_mesh(grid_mesh:GeometryMesh, planet_mesh:GeometryMesh, line_width:float):
+	
 	var vs:PackedVector3Array = []
 	var fs:Array[PackedInt32Array]= []
 	var counter := 0
@@ -36,9 +36,9 @@ static func generate_grid_from_mesh(planet_mesh:GeometryMesh,line_width:float):
 	
 	for v in vs:
 		v.normalized()
-	grid.vertices = vs
-	grid.faces = fs
-	grid.polygons = planet_mesh.polygons
+	grid_mesh.vertices = vs
+	grid_mesh.faces = fs
+	grid_mesh.polygons = planet_mesh.polygons
 	#grid.vertex_radius = ts.vertex_radius
 	#grid.vertices_in_polygon = ts.vertices_in_polygon
-	return grid
+	#return grid
