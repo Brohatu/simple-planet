@@ -28,3 +28,4 @@ sky_mode = 1
 environment = SubResource("Environment_k2fmo")
 
 [node name="Planet" parent="." instance=ExtResource("2_l3cfh")]
+random_seed = 0
