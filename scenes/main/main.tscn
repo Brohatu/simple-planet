@@ -284,6 +284,7 @@ environment = SubResource("Environment_k2fmo")
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 tectonic_plates = Array[ExtResource("3_k2fmo")]([SubResource("Resource_k2fmo"), SubResource("Resource_l3cfh"), SubResource("Resource_6q06x"), SubResource("Resource_ow5a4"), SubResource("Resource_hujxm"), SubResource("Resource_yyfjg"), SubResource("Resource_b1x3f"), SubResource("Resource_a8run"), SubResource("Resource_ouso4"), SubResource("Resource_blune"), SubResource("Resource_th5th"), SubResource("Resource_7smn1"), SubResource("Resource_raeie"), SubResource("Resource_hxu8e"), SubResource("Resource_nvumn"), SubResource("Resource_ou6is"), SubResource("Resource_necax"), SubResource("Resource_r4lks"), SubResource("Resource_pg34l"), SubResource("Resource_m4h2d"), SubResource("Resource_p8abn"), SubResource("Resource_s17dp"), SubResource("Resource_37hlw"), SubResource("Resource_6llfj"), SubResource("Resource_0bhws"), SubResource("Resource_62atk"), SubResource("Resource_i7in8"), SubResource("Resource_gkmcc"), SubResource("Resource_7nlll"), SubResource("Resource_ii537")])
 random_seed = 10
+plate_view = false
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.6425343)
