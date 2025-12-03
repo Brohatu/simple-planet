@@ -4,14 +4,14 @@ class_name Tile extends Node3D
 #region Variables
 static var selectedTile:Tile
 
-## Average temperature of tile in degrees Celsius
+## Average temperature of tile in degrees Celsius.
 @export var temperature := 0.0
-## Average altitude of tile in metres
+## Average altitude of tile in metres.
 @export var altitude := 0.0
 @export var precipitation := 0.0
-## Compass direction of prevailing winds 
+## Compass direction of prevailing winds.
 @export var wind := Vector2.ZERO
-## [Polygon] geometry associated with this tile
+## [Polygon] geometry associated with this tile.
 @export var geometry:Polygon
 var index:int
 
