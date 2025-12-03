@@ -115,7 +115,7 @@ func build():
 	# Generate planet geometry
 	geometry_mesh_handler.initialise_planet_meshes(data)
 	
-	#Tile.create_tiles(self)
+	Tile.create_tiles(self)
 	
 	# Create plates
 	generate_tectonic_plates()
