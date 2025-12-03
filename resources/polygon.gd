@@ -1,23 +1,25 @@
 @tool
 class_name Polygon extends Resource
 
-## The identifying index of this Polygon.
+## The identifying index of this [Polygon].
 @export var index:int
-## An index identifing the vertex the Polygon is centred on. 
+## An index identifing the vertex the [Polygon] is centred on. 
 @export var center_vertex_index:int
 ## A list containing the ids of the vertices surrounding the centre vertex,
-## outlining the shape of the Polygon.
+## outlining the shape of the [Polygon].
 @export var border_vertex_indices:Array[int]
+
 ## A list containing the ids of the surrounding Polygons.
 @export var adjacent_polygon_indices:Array[int]
-## The square of the distance to the seed tile of the TectonicPlate this Polygon belongs to.
+##
+var adjacent_tiles:Array[Tile]
+
+## The square of the distance to the seed tile of the [TectonicPlate] this [Polygon] belongs to.
 var dist_to_seed:float = INF
 
-##@export var altitude := 0.0
+
 @export var latitude:float
 @export var longitude:float
-##@export var temperature:float
-#
 @export var colour:Color:
 	set(val):
 		colour = val
@@ -27,7 +29,6 @@ var dist_to_seed:float = INF
 		drift_vector = val.normalized()
 
 var parent_mesh:GeometryMesh
-
 static var _index_counter = 0
 
 
@@ -39,6 +40,12 @@ func _init() -> void:
 	colour = Color.BLACK
 
 
+static func assign_adjacency_data(tiles:Array[Tile],polygons:Array[Polygon]):
+	for i:int in range(tiles.size()):
+		for j:int in polygons[i].adjacent_polygon_indices:
+			tiles[i].geometry.adjacent_tiles.append(tiles[j])
+
+
 func flatten():
 	var normalised_centre_vertex := Vector3.ZERO
 	for bvi in border_vertex_indices:
@@ -47,7 +54,7 @@ func flatten():
 	parent_mesh.vertices[center_vertex_index] = normalised_centre_vertex
 
 
-## Returns the latitude and longitude of the centre of the Polygon 
+## Returns the latitude and longitude of the centre of the [Polygon]
 func calculate_latitude_and_longitude():
 	var centre_v = get_centre_vertex()
 	latitude = asin(centre_v.y) * 180 / PI 
