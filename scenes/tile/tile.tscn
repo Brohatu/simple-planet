@@ -4,3 +4,5 @@
 
 [node name="Tile" type="Node3D"]
 script = ExtResource("1_vb0sl")
+precipitation = null
+wind = null
