@@ -111,7 +111,7 @@ func _process(_delta: float) -> void:
 
 func build():
 	seed(random_seed)
-	print("\nStarting planet build.")
+	print("Starting planet build.")
 	start_time = Time.get_ticks_usec()
 	# Generate planet geometry
 	geometry_mesh_handler.initialise_planet_meshes(data)
@@ -119,14 +119,18 @@ func build():
 	Tile.create_tiles(self)
 	
 	# Create plates
-	plate_handler.generate_tectonic_plates()
-	# Prepare rivers
+	tectonic_plates = PlateHandler.generate_tectonic_plates(geometry_mesh_handler.planet_mesh, data)
+	print("Tectonic Plates done: " + str((Time.get_ticks_usec() - start_time)/1_000_000.0))
 	
 	# Prepare topography
 	
-	# Generate grid geometry
+	
+	# Prepare rivers
+	
+	
+	# Commit mesh data
 	geometry_mesh_handler.commit_meshes(data)
-	print("Build done: " + str((Time.get_ticks_usec() - start_time)/1_000_000.0))
+	print("Build done: ", (Time.get_ticks_usec() - start_time)/1_000_000.0, "\n")
 	
 	# Generate graphics meshes
 	graphics_mesh_handler.initialise_graphics(geometry_mesh_handler,data)
