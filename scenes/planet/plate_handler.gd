@@ -1,16 +1,16 @@
+@tool
 class_name PlateHandler extends Node3D
 
-var tectonic_plates:Array[TectonicPlate]
-var planet_mesh:GeometryMesh
+#var tectonic_plates:Array[TectonicPlate]
+#var planet_mesh:GeometryMesh
 
 #region methods
-func generate_tectonic_plates(m:GeometryMesh, plate_amount:int):
-	planet_mesh = m
+static func generate_tectonic_plates(planet_mesh:GeometryMesh, data:PlanetData) -> Array[TectonicPlate]:
 	# Initialise temp TectonicPlate array.
 	var tps:Array[TectonicPlate] = []
 	tps.resize(data.number_of_plates)
 	## Array of unassigned Polygons.
-	var unassigned_tiles:Array[Polygon] = Array(geometry_mesh_handler.planet_mesh.polygons.duplicate())
+	var unassigned_tiles:Array[Polygon] = Array(planet_mesh.polygons.duplicate())
 	
 	# Select a random seed tile for each TectonicPlate.
 	for tpi in range(tps.size()):
@@ -36,26 +36,25 @@ func generate_tectonic_plates(m:GeometryMesh, plate_amount:int):
 	# Fuse nearby plates a few times to get less blocky shapes
 	
 	# Tiles go to closest plate seed
-	#voronoi_plates(tps,unassigned_tiles)
+	#voronoi_plates(planet_mesh, tps, unassigned_tiles)
 	
 	# Plates are expanded at random
-	random_fill_plates(tps, unassigned_tiles)
+	random_fill_plates(planet_mesh, tps, unassigned_tiles)
 	
 	# Calculate tile dependent plate data for each plate
 	for tp in tps:
-		tp.parent_mesh = geometry_mesh_handler.planet_mesh
+		tp.parent_mesh = planet_mesh
 		#var rotation_vector = tp.draw_rotation_vector()
 		#add_child(rotation_vector)
 		tp.calculate_edge_tiles()
 	
 	# Assign Oceanic plates
-	tps = assign_oceanic_plates(tps)
-	tectonic_plates = tps
-	
-	print("Tectonic Plates done: " + str((Time.get_ticks_usec() - start_time)/1_000_000.0))
+	tps = assign_oceanic_plates(tps,data)
+	return tps
 
 
-func voronoi_plates(tps:Array[TectonicPlate], unassigned_tiles:Array[Polygon]):
+
+func voronoi_plates(planet_mesh:GeometryMesh, tps:Array[TectonicPlate], unassigned_tiles:Array[Polygon]):
 	# Assign each tile to the closest seed tile. 
 	while unassigned_tiles.size() > 0:
 		var p:Polygon = unassigned_tiles.pop_back()
@@ -66,9 +65,9 @@ func voronoi_plates(tps:Array[TectonicPlate], unassigned_tiles:Array[Polygon]):
 		
 		for tp in tps:
 			## The position of the seed tile.
-			var seed_tile_pos := geometry_mesh_handler.planet_mesh.vertices[tp.seed_tile_index]
+			var seed_tile_pos := planet_mesh.vertices[tp.seed_tile_index]
 			## The position of the current tile.
-			var current_tile_pos := geometry_mesh_handler.planet_mesh.vertices[pi]
+			var current_tile_pos := planet_mesh.vertices[pi]
 			# Using distance squared is faster than distance for comparing
 			# vectors.
 			var dist_2 = current_tile_pos.distance_squared_to(seed_tile_pos)
@@ -83,13 +82,13 @@ func voronoi_plates(tps:Array[TectonicPlate], unassigned_tiles:Array[Polygon]):
 		p.colour = closest_plate.plate_colour
 
 
-func random_fill_plates(tps:Array[TectonicPlate], unassigned_tiles:Array[Polygon]):
+static func random_fill_plates(planet_mesh:GeometryMesh, tps:Array[TectonicPlate], unassigned_tiles:Array[Polygon]):
 	while unassigned_tiles.size() > 0:
 		for tp in tps:
 			var indices = Array(tp.tile_indices)
 			var new_tile
-			var tile_to_expand = geometry_mesh_handler.planet_mesh.polygons[indices.pick_random()]
-			new_tile = geometry_mesh_handler.planet_mesh.polygons[tile_to_expand.adjacent_polygon_indices.pick_random()]
+			var tile_to_expand = planet_mesh.polygons[indices.pick_random()]
+			new_tile = planet_mesh.polygons[tile_to_expand.adjacent_polygon_indices.pick_random()]
 			if new_tile in unassigned_tiles:
 				tp.tile_indices.push_back(new_tile.center_vertex_index)
 				unassigned_tiles.erase(new_tile)
@@ -99,7 +98,7 @@ func random_fill_plates(tps:Array[TectonicPlate], unassigned_tiles:Array[Polygon
 				#$DirectionVectors.add_child(new_tile.draw_drift_direction())
 
 
-func assign_oceanic_plates(tps:Array[TectonicPlate]):
+static func assign_oceanic_plates(tps:Array[TectonicPlate], data:PlanetData):
 	var ratio := data.tectonic_plate_ratio
 	var continental_plates:Array[TectonicPlate] = []
 	for i in range(tps.size() * ratio):
