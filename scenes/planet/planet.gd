@@ -30,6 +30,7 @@ class_name Planet extends Node3D
 			geometry_mesh_handler.planet_mesh.set_instance_shader_parameter("show_plates", plate_view)
 		else:
 			plate_view = false
+
 #@export var temp_view := false:
 	#set(val):
 		#if planet_mesh:
@@ -44,7 +45,7 @@ class_name Planet extends Node3D
 			#planet_mesh.set_instance_shader_parameter("show_altitude", altitude_view)
 		#else:
 			#altitude_view = false
-#
+
 @export_group("Regenerate Planet")
 @export var rebuild := false:
 	set(val):
@@ -79,7 +80,7 @@ var start_time:float
 
 @onready var geometry_mesh_handler := $GeometryMeshHandler as GeometryMeshHandler
 @onready var graphics_mesh_handler := $GraphicalMeshHandler as GraphicalMeshHandler
-
+@onready var plate_handler := $PlateHandler as PlateHandler
 
 #endregion
 
@@ -110,22 +111,26 @@ func _process(_delta: float) -> void:
 
 func build():
 	seed(random_seed)
-	print("\nStarting planet build.")
+	print("Starting planet build.")
 	start_time = Time.get_ticks_usec()
 	# Generate planet geometry
 	geometry_mesh_handler.initialise_planet_meshes(data)
 	
-	#Tile.create_tiles(self)
+	Tile.create_tiles(self)
 	
 	# Create plates
-	generate_tectonic_plates()
-	# Prepare rivers
+	tectonic_plates = PlateHandler.generate_tectonic_plates(geometry_mesh_handler.planet_mesh, data)
+	print("Tectonic Plates done: " + str((Time.get_ticks_usec() - start_time)/1_000_000.0))
 	
 	# Prepare topography
 	
-	# Generate grid geometry
+	
+	# Prepare rivers
+	
+	
+	# Commit mesh data
 	geometry_mesh_handler.commit_meshes(data)
-	print("Build done: " + str((Time.get_ticks_usec() - start_time)/1_000_000.0))
+	print("Build done: ", (Time.get_ticks_usec() - start_time)/1_000_000.0, "\n")
 	
 	# Generate graphics meshes
 	graphics_mesh_handler.initialise_graphics(geometry_mesh_handler,data)
