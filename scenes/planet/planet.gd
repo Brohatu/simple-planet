@@ -30,6 +30,7 @@ class_name Planet extends Node3D
 			geometry_mesh_handler.planet_mesh.set_instance_shader_parameter("show_plates", plate_view)
 		else:
 			plate_view = false
+
 #@export var temp_view := false:
 	#set(val):
 		#if planet_mesh:
@@ -44,7 +45,7 @@ class_name Planet extends Node3D
 			#planet_mesh.set_instance_shader_parameter("show_altitude", altitude_view)
 		#else:
 			#altitude_view = false
-#
+
 @export_group("Regenerate Planet")
 @export var rebuild := false:
 	set(val):
@@ -79,7 +80,7 @@ var start_time:float
 
 @onready var geometry_mesh_handler := $GeometryMeshHandler as GeometryMeshHandler
 @onready var graphics_mesh_handler := $GraphicalMeshHandler as GraphicalMeshHandler
-
+@onready var plate_handler := $PlateHandler as PlateHandler
 
 #endregion
 
@@ -118,7 +119,7 @@ func build():
 	Tile.create_tiles(self)
 	
 	# Create plates
-	generate_tectonic_plates()
+	plate_handler.generate_tectonic_plates()
 	# Prepare rivers
 	
 	# Prepare topography
