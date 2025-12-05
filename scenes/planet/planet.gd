@@ -81,7 +81,7 @@ var start_time:float
 @onready var geometry_mesh_handler := $GeometryMeshHandler as GeometryMeshHandler
 @onready var graphics_mesh_handler := $GraphicalMeshHandler as GraphicalMeshHandler
 @onready var plate_handler := $PlateHandler as PlateHandler
-
+@onready var tile_handler := $TileHandler
 #endregion
 
 #region Methods
