@@ -28,6 +28,7 @@ static func create_tiles(planet:Planet):
 	for i in planet.geometry_mesh_handler.planet_mesh.polygons.size():
 		tiles.push_back(Tile.new())
 		tiles[i].init_geometry(planet.geometry_mesh_handler.planet_mesh.polygons[i])
+		planet.tile_handler.add_child(tiles[i])
 	
 	Polygon.assign_adjacency_data(tiles, planet.geometry_mesh_handler.planet_mesh.polygons)
 	
