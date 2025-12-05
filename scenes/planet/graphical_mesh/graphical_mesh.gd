@@ -21,13 +21,6 @@ func create_mesh():
 		face_indices[i*3+1] = geometry_mesh.faces[i][1]
 		face_indices[i*3+2] = geometry_mesh.faces[i][2]
 	
-	#for f in geometry_mesh.faces:
-		#var e1:Vector3 = vertices[f[1]] - vertices[f[0]] ## Vector equivalent to the face edge from f[0] to f[1]
-		#var e2:Vector3 = vertices[f[2]] - vertices[f[0]] ## Vector equivalent to the face edge from f[0] to f[2]
-		#var norm:Vector3 = -e1.cross(e2).normalized() ## Vector of length 1.0 normal to the current face f.
-		#
-		#normals.append(norm)
-	
 	vertex_colours = []
 	vertex_colours.resize(geometry_mesh.get_number_of_vertices())
 	
