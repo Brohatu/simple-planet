@@ -14,7 +14,7 @@ func initialise(g_mesh:GeometryMesh) -> void:
 func create_mesh():
 	var vertices:PackedVector3Array = geometry_mesh.vertices
 	var face_indices:PackedInt32Array = []
-	var normals:PackedVector3Array = []
+	var normals:PackedVector3Array = geometry_mesh.mesh.surface_get_arrays(0)[Mesh.ARRAY_NORMAL]
 	face_indices.resize(geometry_mesh.faces.size()*3)
 	for i in range(geometry_mesh.faces.size()):
 		face_indices[i*3+0] = geometry_mesh.faces[i][0]
@@ -25,6 +25,7 @@ func create_mesh():
 		#var e1:Vector3 = vertices[f[1]] - vertices[f[0]] ## Vector equivalent to the face edge from f[0] to f[1]
 		#var e2:Vector3 = vertices[f[2]] - vertices[f[0]] ## Vector equivalent to the face edge from f[0] to f[2]
 		#var norm:Vector3 = -e1.cross(e2).normalized() ## Vector of length 1.0 normal to the current face f.
+		#
 		#normals.append(norm)
 	
 	vertex_colours = []
