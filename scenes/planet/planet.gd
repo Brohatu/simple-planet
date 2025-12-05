@@ -137,40 +137,6 @@ func build():
 
 
 
-
-
-##func build_grid():
-	##grid_mesh_inst.clear()
-	##grid_mesh_inst.generate_icosahedron(data.resolution)
-	##grid_mesh_inst.tesselate_ico_mesh()
-	##grid_mesh_inst.create_grid_from_mesh(g_data.line_width)
-	##grid_mesh_inst.mesh = grid_mesh_inst.create_mesh(ArrayMesh.new())
-	##grid_mesh_inst.scale = Vector3.ONE / g_data.line_width + Vector3(0.01,0.01,0.01)
-	##grid_mesh_inst.mesh.surface_set_material(0,data.border_material)
-
-
-##func seed_tectonic_plates():
-	### Initialise temp TectonicPlate array.
-	##var tps:Array[TectonicPlate] = []
-	##tps.resize(data.number_of_plates)
-	#### Array of unassigned Polygons.
-	##var unassigned_tiles := Array(planet_mesh_inst.polygons.duplicate())
-	##
-	### Select a random seed tile for each TectonicPlate.
-	##for tpi in range(tps.size()):
-		#### Randomly selected index.
-		##var selection := randi_range(0, unassigned_tiles.size() - 1) 
-		#### Random seed tile.
-		##var p:Polygon = unassigned_tiles.pop_at(selection)
-		##var pi = p.center_vertex_index
-		##tps[tpi] = TectonicPlate.new()
-		##tps[tpi].tile_indices.push_back(p.center_vertex_index)
-		##tps[tpi].seed_tile_index = pi
-		###p.colour = tps[tpi].plate_colour
-		###p.colour = Color.BLACK
-	##return [tps, unassigned_tiles]
-
-
 #region Tectonic Plates methods
 func voronoi_plates(tps:Array[TectonicPlate], unassigned_tiles:Array[Polygon]):
 	# Assign each tile to the closest seed tile. 
