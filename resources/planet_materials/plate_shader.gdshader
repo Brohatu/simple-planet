@@ -6,12 +6,11 @@ instance uniform float max_temp;
 instance uniform float min_temp;
 
 instance uniform bool show_altitude;
+instance uniform bool stereographic;
 instance uniform float max_alt;
 instance uniform float min_alt;
 instance uniform float sea_level;
 uniform sampler3D surface_noise;
-
-
 
 varying vec4 plate_col;
 varying vec4 cust1;
@@ -35,6 +34,16 @@ varying float sampler_val;
 #define SHALLOWS vec3(0.0,0.05,0.25)
 
 
+vec3 stereo_project(vec3 v) {
+	vec3 result;
+	float vx = v.x/(-1.0 + v.y);
+	float vz = v.z/(1.0 - v.y);
+	float vy = 0.0;
+	result = vec3(vx,vy,vz);
+	return result;
+}
+
+
 void vertex() {
 	// Called for every vertex the material is visible on.
 	// rgb = plate colour
@@ -44,8 +53,11 @@ void vertex() {
 
 	//VERTEX = VERTEX * sqrt(cust1.r + 1.0);
 	//sampler_val = texture(surface_noise,VERTEX).r * 5.0;
+	
+	if (stereographic) {
+		VERTEX = stereo_project(VERTEX);
+	}
 }
-
 
 
 void fragment() {
