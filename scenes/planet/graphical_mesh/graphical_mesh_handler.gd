@@ -20,3 +20,7 @@ func initialise_graphics(geometry_handler:GeometryMeshHandler,data:PlanetData):
 	planet_mesh.initialise(geometry_handler.planet_mesh)
 	planet_mesh.create_mesh()
 	planet_mesh.mesh.surface_set_material(0,data.surface_graphics_material)
+	
+	grid_mesh.initialise(geometry_handler.grid_mesh)
+	grid_mesh.create_mesh()
+	grid_mesh.mesh.surface_set_material(0,data.surface_graphics_material)
