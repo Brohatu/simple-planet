@@ -33,7 +33,19 @@ class_name Planet extends Node3D
 @export var plate_view := false:
 	set(val):
 		plate_view = val
+		
+		
+		
+		
+		
+		var colours:PackedColorArray = []
+		colours.resize(geometry_mesh_handler.planet_mesh.vertices.size())
+		for t in tiles:
+			#var tile_col = t.geometry.colour
+			colours[t.index] = t.geometry.colour
+		graphics_mesh_handler.update_graphics(geometry_mesh_handler.planet_mesh,colours)
 		data.planet_material.set_shader_parameter("show_plates", val)
+
 @export var temp_view := false#:
 	#set(val):
 		#if planet_mesh:
@@ -43,11 +55,8 @@ class_name Planet extends Node3D
 			#temp_view = false
 @export var altitude_view := false:
 	set(val):
-		if geometry_mesh_handler:
-			altitude_view = val
-			geometry_mesh_handler.planet_mesh.set_instance_shader_parameter("show_altitude", altitude_view)
-		else:
-			altitude_view = false
+		altitude_view = val
+		
 @export var stereographic:bool:
 	set(val):
 		data.planet_material.set_shader_parameter("stereographic", val)
@@ -97,7 +106,7 @@ var start_time:float
 #region Methods
 ## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	
+	build()
 	# Build mesh
 	
 	# Build tiles
