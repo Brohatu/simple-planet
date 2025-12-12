@@ -41,6 +41,7 @@ var triangle_to_polygon_map:Dictionary
 #region Methods
 ## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	vertices = []
 	#generate_icosahedron(0)
 	#create_mesh(ArrayMesh.new())
 	pass
@@ -364,6 +365,9 @@ func create_mesh(m:ArrayMesh) -> ArrayMesh:
 				# Custom 1 contains altitude, temperature,
 				#st.set_custom_format(1,SurfaceTool.CUSTOM_RGB_FLOAT)
 				#st.set_custom(1,Color(tiles[vi].altitude,tiles[vi].temperature,0.0))
+				# Custom 2 contains planet resoluton
+				st.set_custom_format(2, SurfaceTool.CUSTOM_RGBA8_UNORM)
+				st.set_custom(2,Color(polygons.size(),0,0,0))
 			#else:
 				#st.set_custom_format(0,SurfaceTool.CUSTOM_RGB_FLOAT)
 				#st.set_custom(0,Color.BLACK)
