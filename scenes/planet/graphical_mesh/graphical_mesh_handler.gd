@@ -5,22 +5,20 @@ class_name GraphicalMeshHandler extends Node3D
 @onready var grid_mesh := $GridGraphicsMesh as GraphicalMesh
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
-
-
-
-func initialise_graphics(geometry_handler:GeometryMeshHandler,data:PlanetData):
-	planet_mesh.initialise(geometry_handler.planet_mesh)
+func initialise_graphics(mesh:GeometryMesh,material:Material):
+	planet_mesh.initialise(mesh)
 	planet_mesh.create_mesh()
-	planet_mesh.mesh.surface_set_material(0,data.surface_graphics_material)
-	
-	grid_mesh.initialise(geometry_handler.grid_mesh)
+	planet_mesh.mesh.surface_set_material(0,material)
+
+
+func initialise_grid(mesh:GeometryMesh,material:Material):
+	grid_mesh.initialise(mesh)
 	grid_mesh.create_mesh()
-	grid_mesh.mesh.surface_set_material(0,data.surface_graphics_material)
+	grid_mesh.mesh.surface_set_material(0,material)
+
+
+func update_graphics(mesh:GeometryMesh,new_colours:PackedColorArray):
+	planet_mesh.update_vertex_colours(new_colours)
+	var arrays:Array = planet_mesh.mesh.surface_get_arrays(0)
+	planet_mesh.update_mesh_attributes(arrays[Mesh.ARRAY_VERTEX],arrays[Mesh.ARRAY_INDEX],arrays[Mesh.ARRAY_NORMAL])
