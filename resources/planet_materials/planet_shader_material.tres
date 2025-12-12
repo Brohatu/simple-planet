@@ -5,3 +5,5 @@
 [resource]
 render_priority = 0
 shader = ExtResource("1_tye5r")
+shader_parameter/show_plates = false
+shader_parameter/stereographic = false
