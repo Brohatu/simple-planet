@@ -7,19 +7,20 @@ uniform bool show_plates;
 uniform bool stereographic;
 
 varying vec4 cust1;
-
+varying vec4 cust2;
 
 
 void vertex() {
 	// Called for every vertex the material is visible on.
 	// rgb = plate colour
 	plate_col = CUSTOM0;
-	// r = altitude, g = temperature, b = empty
+	// r = altitude, g = temperature,
 	cust1 = CUSTOM1;
+	//int cust2r = int(CUSTOM2.r);
 
-	if (VERTEX_ID <= 15359) {
-		COLOR.a = 0.0;
-	}
+	//if (VERTEX_ID <= cust2r) {
+		////COLOR.a = 0.0;
+	//}
 
 	if (show_plates) {
 		COLOR.rgb = toggle_plate_view();
@@ -27,7 +28,7 @@ void vertex() {
 
 	if (stereographic) {
 		VERTEX = stereo_project(VERTEX,VERTEX_ID);
-		COLOR.a = stereo_colour(VERTEX_ID);
+		//COLOR.a = stereo_colour(VERTEX_ID);
 		NORMAL = vec3(0.0,1.0,0.0);
 	}
 }
