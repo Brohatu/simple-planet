@@ -45,7 +45,7 @@ func determine_vertex_colours():
 			temp_col /= geometry_mesh.vertex_pgon_membership[i].size()
 		#temp_col *= 255.0
 		vertex_colours[i] = Color.from_rgba8(temp_col.r8, temp_col.g8, temp_col.b8, temp_col.a8)
-		
+
 
 
 func update_mesh_attributes(vertices:PackedVector3Array, face_indices:PackedInt32Array, normals:PackedVector3Array):
@@ -58,5 +58,5 @@ func update_mesh_attributes(vertices:PackedVector3Array, face_indices:PackedInt3
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,mesh_arrays)
 
 
-func update_vertex_colours():
-	
+func update_vertex_colours(new_colours:PackedColorArray):
+	vertex_colours = new_colours
