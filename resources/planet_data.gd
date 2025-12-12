@@ -22,17 +22,16 @@ class_name PlanetData extends Resource
 
 
 #region Materials
-@export var surface_geometry_material:ShaderMaterial:
+@export var planet_material:ShaderMaterial:
 	set(val):
-		surface_geometry_material = val
+		planet_material = val
 		#emit_changed()
 
-@export var border_geometry_material:Material:
+@export var border_material:Material:
 	set(val):
-		border_geometry_material = val
+		border_material = val
 		#emit_changed()
 
-@export var surface_graphics_material:Material
 
 
 @export var surface_noise:FastNoiseLite
