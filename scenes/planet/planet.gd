@@ -22,35 +22,54 @@ class_name Planet extends Node3D
 @export var tiles:Array[Tile]
 @export var random_seed:int
 
+@export var grid_on := true:
+	set(val):
+		if graphics_mesh_handler.grid_mesh:
+			grid_on = val
+			graphics_mesh_handler.grid_mesh.visible = val
+			geometry_mesh_handler.grid_mesh.visible = val
+
 @export_group("Shader Modes")
 @export var plate_view := false:
 	set(val):
-		if geometry_mesh_handler:
-			plate_view = val
-			geometry_mesh_handler.planet_mesh.set_instance_shader_parameter("show_plates", plate_view)
-		else:
-			plate_view = false
+		plate_view = val
+		
+		
+		
+		
+		
+		var colours:PackedColorArray = []
+		colours.resize(geometry_mesh_handler.planet_mesh.vertices.size())
+		for t in tiles:
+			#var tile_col = t.geometry.colour
+			colours[t.index] = t.geometry.colour
+		graphics_mesh_handler.update_graphics(geometry_mesh_handler.planet_mesh,colours)
+		data.planet_material.set_shader_parameter("show_plates", val)
 
-#@export var temp_view := false:
+@export var temp_view := false#:
 	#set(val):
 		#if planet_mesh:
 			#temp_view = val
 			#planet_mesh.set_instance_shader_parameter("show_temp", temp_view)
 		#else:
 			#temp_view = false
-#@export var altitude_view := false:
-	#set(val):
-		#if planet_mesh:
-			#altitude_view = val
-			#planet_mesh.set_instance_shader_parameter("show_altitude", altitude_view)
-		#else:
-			#altitude_view = false
+@export var altitude_view := false:
+	set(val):
+		altitude_view = val
+		
+@export var stereographic:bool:
+	set(val):
+		data.planet_material.set_shader_parameter("stereographic", val)
+		stereographic = val
+
+
 
 @export_group("Regenerate Planet")
 @export var rebuild := false:
 	set(val):
 		rebuild = false
 		build()
+
 
 #@export var regen_climate := false:
 	#set(val):
@@ -87,7 +106,7 @@ var start_time:float
 #region Methods
 ## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	
+	build()
 	# Build mesh
 	
 	# Build tiles
@@ -123,6 +142,10 @@ func build():
 	print("Tectonic Plates done: " + str((Time.get_ticks_usec() - start_time)/1_000_000.0))
 	
 	# Prepare topography
+	Topography.initialise_topography(tiles,data,geometry_mesh_handler.planet_mesh)
+	#for t in tiles:
+		#t.topography.bedrock = data.surface_noise.get_noise_3dv(geometry_mesh_handler.planet_mesh.polygons[t.index].get_centre_vertex())
+	
 	
 	
 	# Prepare rivers
@@ -133,126 +156,12 @@ func build():
 	print("Build done: ", (Time.get_ticks_usec() - start_time)/1_000_000.0, "\n")
 	
 	# Generate graphics meshes
-	graphics_mesh_handler.initialise_graphics(geometry_mesh_handler,data)
+	graphics_mesh_handler.initialise_graphics(geometry_mesh_handler.planet_mesh,data.planet_material)
+	graphics_mesh_handler.initialise_grid(geometry_mesh_handler.grid_mesh,data.border_material)
 
 
 
 #region Tectonic Plates methods
-func voronoi_plates(tps:Array[TectonicPlate], unassigned_tiles:Array[Polygon]):
-	# Assign each tile to the closest seed tile. 
-	while unassigned_tiles.size() > 0:
-		var p:Polygon = unassigned_tiles.pop_back()
-		## Index of Polygon p
-		var pi := p.center_vertex_index
-		## The current best plate for the tile. 
-		var closest_plate:TectonicPlate
-		
-		for tp in tps:
-			## The position of the seed tile.
-			var seed_tile_pos := geometry_mesh_handler.planet_mesh.vertices[tp.seed_tile_index]
-			## The position of the current tile.
-			var current_tile_pos := geometry_mesh_handler.planet_mesh.vertices[pi]
-			# Using distance squared is faster than distance for comparing
-			# vectors.
-			var dist_2 = current_tile_pos.distance_squared_to(seed_tile_pos)
-			
-			if dist_2 < p.dist_to_seed:
-				closest_plate = tp
-				p.dist_to_seed = dist_2
-		
-		closest_plate.tile_indices.push_back(pi)
-		p.drift_vector = closest_plate.drift_vector.cross(p.get_centre_vertex())
-		#$DirectionVectors.add_child(p.draw_drift_direction())
-		p.colour = closest_plate.plate_colour
-
-
-func random_fill_plates(tps:Array[TectonicPlate], unassigned_tiles:Array[Polygon]):
-	while unassigned_tiles.size() > 0:
-		for tp in tps:
-			var indices = Array(tp.tile_indices)
-			var new_tile
-			var tile_to_expand = geometry_mesh_handler.planet_mesh.polygons[indices.pick_random()]
-			new_tile = geometry_mesh_handler.planet_mesh.polygons[tile_to_expand.adjacent_polygon_indices.pick_random()]
-			if new_tile in unassigned_tiles:
-				tp.tile_indices.push_back(new_tile.center_vertex_index)
-				unassigned_tiles.erase(new_tile)
-				new_tile.drift_vector = tp.drift_vector.cross(new_tile.get_centre_vertex())
-				new_tile.colour = tp.plate_colour
-				#print("Tiles remaining: ", unassigned_tiles.size())
-				#$DirectionVectors.add_child(new_tile.draw_drift_direction())
-
-
-func generate_tectonic_plates():
-	# Initialise temp TectonicPlate array.
-	var tps:Array[TectonicPlate] = []
-	tps.resize(data.number_of_plates)
-	## Array of unassigned Polygons.
-	var unassigned_tiles:Array[Polygon] = Array(geometry_mesh_handler.planet_mesh.polygons.duplicate())
-	
-	# Select a random seed tile for each TectonicPlate.
-	for tpi in range(tps.size()):
-		## Randomly selected index.
-		var selection := randi_range(0, unassigned_tiles.size() - 1) 
-		## Random seed tile.
-		var p:Polygon = unassigned_tiles.pop_at(selection)
-		## Index of seed tile
-		var pi := p.center_vertex_index 
-		# Create new plate at plate index tpi
-		tps[tpi] = TectonicPlate.new()
-		# Push seed plate index to plate
-		tps[tpi].tile_indices.push_back(p.center_vertex_index)
-		tps[tpi].seed_tile_index = pi
-		# Assign drift axis to plate
-		tps[tpi].drift_vector = Vector3(randf_range(-1.0,1.0),randf_range(-1.0,1.0),randf_range(-1.0,1.0)).normalized()
-		# Assign drift direction to seed plate
-		p.drift_vector = tps[tpi].drift_vector.cross(p.get_centre_vertex())
-		#$DirectionVectors.add_child(p.draw_drift_direction())
-		p.colour = tps[tpi].plate_colour
-		#p.colour = Color.BLACK
-	
-	# Fuse nearby plates a few times to get less blocky shapes
-	
-	# Tiles go to closest plate seed
-	#voronoi_plates(tps,unassigned_tiles)
-	
-	# Plates are expanded at random
-	random_fill_plates(tps, unassigned_tiles)
-	
-	# Calculate tile dependent plate data for each plate
-	for tp in tps:
-		tp.parent_mesh = geometry_mesh_handler.planet_mesh
-		#var rotation_vector = tp.draw_rotation_vector()
-		#add_child(rotation_vector)
-		tp.calculate_edge_tiles()
-	
-	# Assign Oceanic plates
-	tps = assign_oceanic_plates(tps)
-	tectonic_plates = tps
-	
-	print("Tectonic Plates done: " + str((Time.get_ticks_usec() - start_time)/1_000_000.0))
-
-
-func assign_oceanic_plates(tps:Array[TectonicPlate]):
-	var ratio := data.tectonic_plate_ratio
-	var continental_plates:Array[TectonicPlate] = []
-	for i in range(tps.size() * ratio):
-		var selected_plate = 0
-		while !selected_plate:
-			selected_plate = tps.pick_random()
-			if not continental_plates.has(selected_plate):
-				selected_plate.continental = true
-				continental_plates.push_back(selected_plate)
-			else:
-				selected_plate = 0
-	
-	#for tp in tps:
-		#if tp.continental:
-			#tp.plate_colour = Color.DARK_GREEN
-		#else:
-			#tp.plate_colour = Color.BLUE
-	
-	return tps
-
 
 ##func set_tile_colours():
 	##var arrays = planet_mesh_inst.mesh.surface_get_arrays(0)

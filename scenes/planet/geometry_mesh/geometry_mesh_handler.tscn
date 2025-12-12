@@ -1,18 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://bmo4eqlutn4m0"]
+[gd_scene load_steps=3 format=3 uid="uid://bmo4eqlutn4m0"]
 
 [ext_resource type="Script" uid="uid://dv04emtv8x1vn" path="res://scenes/planet/geometry_mesh/geometry_mesh_handler.gd" id="1_n5d2j"]
 [ext_resource type="PackedScene" uid="uid://xv3a1g6bkl8p" path="res://scenes/planet/geometry_mesh/geometry_mesh.tscn" id="2_vwdnu"]
-[ext_resource type="PackedScene" uid="uid://p82eosphg6jb" path="res://scenes/polygon_grid.tscn" id="5_vwdnu"]
 
 [node name="GeometryMeshHandler" type="Node3D"]
 script = ExtResource("1_n5d2j")
 
 [node name="PlanetMesh" parent="." instance=ExtResource("2_vwdnu")]
-vertices = PackedVector3Array()
-faces = Array[PackedInt32Array]([])
 
 [node name="GridMesh" parent="." instance=ExtResource("2_vwdnu")]
-vertices = PackedVector3Array()
-faces = Array[PackedInt32Array]([])
-
-[node name="PolygonGrid" parent="." instance=ExtResource("5_vwdnu")]

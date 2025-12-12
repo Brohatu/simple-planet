@@ -9,7 +9,7 @@ var vertex_colours:PackedColorArray
 func initialise(g_mesh:GeometryMesh) -> void:
 	mesh = ArrayMesh.new()
 	geometry_mesh = g_mesh
-	
+
 
 func create_mesh():
 	var vertices:PackedVector3Array = geometry_mesh.vertices
@@ -34,16 +34,18 @@ func create_mesh():
 	update_mesh_attributes(vertices, face_indices, normals)
 
 
-
 func determine_vertex_colours():
 	var temp_col:Color
+	
 	for i in range(geometry_mesh.get_number_of_vertices()):
 		temp_col = Color()
-		for j in geometry_mesh.vertex_pgon_membership[i]:
-			temp_col += geometry_mesh.polygons[j].colour
-		temp_col /= geometry_mesh.vertex_pgon_membership[i].size()
+		if geometry_mesh.vertex_pgon_membership.size() > 0:
+			for j in geometry_mesh.vertex_pgon_membership[i]:
+				temp_col += geometry_mesh.polygons[j].colour
+			temp_col /= geometry_mesh.vertex_pgon_membership[i].size()
 		#temp_col *= 255.0
 		vertex_colours[i] = Color.from_rgba8(temp_col.r8, temp_col.g8, temp_col.b8, temp_col.a8)
+
 
 
 func update_mesh_attributes(vertices:PackedVector3Array, face_indices:PackedInt32Array, normals:PackedVector3Array):
@@ -54,4 +56,7 @@ func update_mesh_attributes(vertices:PackedVector3Array, face_indices:PackedInt3
 	mesh_arrays[Mesh.ARRAY_COLOR] = vertex_colours
 	mesh_arrays[Mesh.ARRAY_NORMAL] = normals
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES,mesh_arrays)
-	
+
+
+func update_vertex_colours(new_colours:PackedColorArray):
+	vertex_colours = new_colours

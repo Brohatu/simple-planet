@@ -41,6 +41,7 @@ var triangle_to_polygon_map:Dictionary
 #region Methods
 ## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	vertices = []
 	#generate_icosahedron(0)
 	#create_mesh(ArrayMesh.new())
 	pass
@@ -363,14 +364,17 @@ func create_mesh(m:ArrayMesh) -> ArrayMesh:
 				st.set_custom(0,polygons[vi].colour)
 				# Custom 1 contains altitude, temperature,
 				#st.set_custom_format(1,SurfaceTool.CUSTOM_RGB_FLOAT)
-				#st.set_custom(1,Color(polygons[vi].altitude,polygons[vi].temperature,0.0))
+				#st.set_custom(1,Color(tiles[vi].altitude,tiles[vi].temperature,0.0))
+				# Custom 2 contains planet resoluton
+				st.set_custom_format(2, SurfaceTool.CUSTOM_RGBA8_UNORM)
+				st.set_custom(2,Color(polygons.size(),0,0,0))
+			#else:
+				#st.set_custom_format(0,SurfaceTool.CUSTOM_RGB_FLOAT)
+				#st.set_custom(0,Color.BLACK)
 			st.add_vertex((v))
 	
 	return st.commit(m)
 
-
-#func create_grid_from_mesh(line_width:float):
-	#polygon_grid.generate_grid_from_mesh(self,line_width)
 
 #endregion
 
@@ -385,7 +389,7 @@ func clear():
 	subdivides.clear()
 	vertices_in_polygon.clear()
 
-
+#region Getters
 func get_number_of_vertices():
 	return vertices.size()
 
@@ -394,5 +398,7 @@ func get_number_of_faces():
 
 func get_number_of_polygons():
 	return polygons.size()
+
+#endregion
 
 #endregion

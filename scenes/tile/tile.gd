@@ -4,10 +4,14 @@ class_name Tile extends Node3D
 #region Variables
 static var selectedTile:Tile
 
+@export var topography:Topography
+#@onready var climate = $Climate
+#@onready var ecosystem = $Ecosystem
+
 ## Average temperature of tile in degrees Celsius.
 @export var temperature := 0.0
 ## Average altitude of tile in metres.
-@export var altitude := 0.0
+#@export var altitude := 0.0
 @export var precipitation := 0.0
 ## Compass direction of prevailing winds.
 @export var wind := Vector2.ZERO
@@ -38,13 +42,14 @@ static func create_tiles(planet:Planet):
 
 func init_geometry(p:Polygon):
 	geometry = p
+	index = p.index
 	geometry.calculate_latitude_and_longitude()
 	# Calculate area
 
 
 func intitialise_attribute_getter():
 	_attribute_getter["temperature"] = func(tile): return tile.climate.temperature
-	_attribute_getter["altitude"] = func(tile): return tile.topography.altitude
+	_attribute_getter["altitude"] = func(tile): return tile.topography.calculate_altitude
 	_attribute_getter["precipitation"] = func(tile): return tile.climate.precipitation
 	# Add more 
 
@@ -60,10 +65,8 @@ func get_attribute(key:String) -> float:
 
 
 func calculate_altitude():
-	pass
+	return topography.bedrock # + topography.sediment
 
 
-func calculate_temperature():
-	pass
 
 #endregion

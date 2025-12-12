@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bfl3c05qjm2u"]
+
+[ext_resource type="Shader" uid="uid://bx7p4cx764608" path="res://resources/planet_materials/planet_shader.gdshader" id="1_tye5r"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_tye5r")
+shader_parameter/show_plates = false
+shader_parameter/stereographic = false

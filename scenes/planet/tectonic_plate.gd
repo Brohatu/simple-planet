@@ -8,7 +8,7 @@ class_name TectonicPlate extends Resource
 @export var tile_indices:PackedInt32Array
 @export var seed_tile_index:int
 @export var drift_vector := Vector3.ZERO
-@export var plate_colour := Color(randf(),randf(),randf())
+@export var plate_colour := Color(randf(),randf(),randf())/4.0
 @export var continental := false
 @export var edge_tile_indices:PackedInt32Array
 
