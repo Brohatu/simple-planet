@@ -22,28 +22,25 @@ class_name Planet extends Node3D
 @export var tiles:Array[Tile]
 @export var random_seed:int
 
-@export var grid_on := false:
+@export var grid_on := true:
 	set(val):
-		grid_on = val
-		graphics_mesh_handler.grid_mesh.visible = val
+		if graphics_mesh_handler.grid_mesh:
+			grid_on = val
+			graphics_mesh_handler.grid_mesh.visible = val
+			geometry_mesh_handler.grid_mesh.visible = val
 
 @export_group("Shader Modes")
 @export var plate_view := false:
 	set(val):
-		if geometry_mesh_handler:
-			plate_view = val
-			geometry_mesh_handler.planet_mesh.set_instance_shader_parameter("show_plates", plate_view)
-		else:
-			plate_view = false
-
-#@export var temp_view := false:
+		plate_view = val
+		data.planet_material.set_shader_parameter("show_plates", val)
+@export var temp_view := false#:
 	#set(val):
 		#if planet_mesh:
 			#temp_view = val
 			#planet_mesh.set_instance_shader_parameter("show_temp", temp_view)
 		#else:
 			#temp_view = false
-			
 @export var altitude_view := false:
 	set(val):
 		if geometry_mesh_handler:
@@ -51,15 +48,12 @@ class_name Planet extends Node3D
 			geometry_mesh_handler.planet_mesh.set_instance_shader_parameter("show_altitude", altitude_view)
 		else:
 			altitude_view = false
-
-@export var stereographic := false:
+@export var stereographic:bool:
 	set(val):
-		if geometry_mesh_handler:
-			stereographic = val
-			graphics_mesh_handler.planet_mesh.set_instance_shader_parameter("stereographic", stereographic)
-			graphics_mesh_handler.grid_mesh.set_instance_shader_parameter("stereographic", stereographic)
-		else:
-			stereographic = false
+		data.planet_material.set_shader_parameter("stereographic", val)
+		stereographic = val
+
+
 
 @export_group("Regenerate Planet")
 @export var rebuild := false:
@@ -139,9 +133,10 @@ func build():
 	print("Tectonic Plates done: " + str((Time.get_ticks_usec() - start_time)/1_000_000.0))
 	
 	# Prepare topography
-	Topography.initialise_topography(tiles)
-	for t in tiles:
-		t.topography.bedrock = data.surface_noise.get_noise_3dv(geometry_mesh_handler.planet_mesh.polygons[t.index].get_centre_vertex()) 
+	Topography.initialise_topography(tiles,data,geometry_mesh_handler.planet_mesh)
+	#for t in tiles:
+		#t.topography.bedrock = data.surface_noise.get_noise_3dv(geometry_mesh_handler.planet_mesh.polygons[t.index].get_centre_vertex())
+	
 	
 	
 	# Prepare rivers
@@ -152,7 +147,8 @@ func build():
 	print("Build done: ", (Time.get_ticks_usec() - start_time)/1_000_000.0, "\n")
 	
 	# Generate graphics meshes
-	graphics_mesh_handler.initialise_graphics(geometry_mesh_handler,data)
+	graphics_mesh_handler.initialise_graphics(geometry_mesh_handler.planet_mesh,data.planet_material)
+	graphics_mesh_handler.initialise_grid(geometry_mesh_handler.grid_mesh,data.border_material)
 
 
 
