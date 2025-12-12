@@ -1,15 +1,5 @@
 @tool
-class_name PolygonGrid extends Node3D
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
+class_name PolygonGrid
 
 
 static func generate_grid_from_mesh(grid_mesh:GeometryMesh, planet_mesh:GeometryMesh, line_width:float):
