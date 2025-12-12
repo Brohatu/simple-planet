@@ -42,6 +42,7 @@ static func create_tiles(planet:Planet):
 
 func init_geometry(p:Polygon):
 	geometry = p
+	index = p.index
 	geometry.calculate_latitude_and_longitude()
 	# Calculate area
 
