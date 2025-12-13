@@ -4,7 +4,7 @@ class_name GraphicalMeshHandler extends Node3D
 @onready var planet_mesh := $PlanetGraphicsMesh as GraphicalMesh
 @onready var grid_mesh := $GridGraphicsMesh as GraphicalMesh
 
-
+var topography_cols:PackedColorArray = []
 
 func initialise_graphics(mesh:GeometryMesh,material:Material):
 	planet_mesh.initialise(mesh)
