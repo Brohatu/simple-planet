@@ -45,7 +45,7 @@ class_name Planet extends Node3D
 @export var altitude_view := false:
 	set(val):
 		altitude_view = val
-		graphics_mesh_handler.planet_mesh.
+		
 
 @export var stereographic:bool:
 	set(val):
