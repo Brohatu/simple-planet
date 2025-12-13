@@ -16,16 +16,12 @@ void vertex() {
 	plate_col = CUSTOM0;
 	// r = altitude, g = temperature,
 	cust1 = CUSTOM1;
-	//int cust2r = int(CUSTOM2.r);
-
-	//if (VERTEX_ID <= cust2r) {
-		////COLOR.a = 0.0;
-	//}
-
+	
+	
 	if (show_plates) {
 		COLOR.rgb = toggle_plate_view();
 	}
-
+	
 	if (stereographic) {
 		VERTEX = stereo_project(VERTEX,VERTEX_ID);
 		//COLOR.a = stereo_colour(VERTEX_ID);
