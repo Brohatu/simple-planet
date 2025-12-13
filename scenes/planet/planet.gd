@@ -33,17 +33,6 @@ class_name Planet extends Node3D
 @export var plate_view := false:
 	set(val):
 		plate_view = val
-		
-		
-		
-		
-		
-		var colours:PackedColorArray = []
-		colours.resize(geometry_mesh_handler.planet_mesh.vertices.size())
-		for t in tiles:
-			#var tile_col = t.geometry.colour
-			colours[t.index] = t.geometry.colour
-		graphics_mesh_handler.update_graphics(geometry_mesh_handler.planet_mesh,colours)
 		data.planet_material.set_shader_parameter("show_plates", val)
 
 @export var temp_view := false#:
@@ -56,13 +45,13 @@ class_name Planet extends Node3D
 @export var altitude_view := false:
 	set(val):
 		altitude_view = val
-		
+		graphics_mesh_handler.planet_mesh.
+
 @export var stereographic:bool:
 	set(val):
 		data.planet_material.set_shader_parameter("stereographic", val)
+		data.border_material.set_shader_parameter("stereographic", val)
 		stereographic = val
-
-
 
 @export_group("Regenerate Planet")
 @export var rebuild := false:
@@ -252,5 +241,8 @@ func build():
 
 #endregion
 
-
+func get_plate_colours():
+	
+	
+	pass
 #endregion
