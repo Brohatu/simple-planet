@@ -43,7 +43,7 @@ func determine_vertex_colours():
 			for j in geometry_mesh.vertex_pgon_membership[i]:
 				temp_col += geometry_mesh.polygons[j].colour
 			temp_col /= geometry_mesh.vertex_pgon_membership[i].size()
-		#temp_col *= 255.0
+		temp_col *= 255.0
 		vertex_colours[i] = Color.from_rgba8(temp_col.r8, temp_col.g8, temp_col.b8, temp_col.a8)
 
 
