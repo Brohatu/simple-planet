@@ -24,7 +24,7 @@ class_name Planet extends Node3D
 
 @export var grid_on := true:
 	set(val):
-		if graphics_mesh_handler.grid_mesh:
+		if graphics_mesh_handler:
 			grid_on = val
 			graphics_mesh_handler.grid_mesh.visible = val
 			geometry_mesh_handler.grid_mesh.visible = val
